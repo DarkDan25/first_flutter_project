@@ -63,7 +63,7 @@ class TypeName extends StatefulWidget{
 
 class _TypeNameState extends State<TypeName>{
   final myController = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -154,9 +154,97 @@ class _TypeGroupState extends State<TypeGroup>{
             TextField(controller: myController),
             ElevatedButton(
                 onPressed:  () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TypeColor(
+                    name: widget.name,
+                    age: widget.age,
+                    group: myController.text )));
                 },
                 child: Text("Далее"))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TypeColor extends StatefulWidget{
+  final String name;
+  final String age;
+  final String group;
+
+  const TypeColor({super.key, required this.name, required this.age, required this.group});
+
+  @override
+  State<TypeColor> createState() => _TypeColorState();
+}
+
+class _TypeColorState extends State<TypeColor>{
+  final myController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text("4. ${widget.group}"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Выбери любимый цвет"),
+            Row(mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              ElevatedButton(
+                  onPressed:  () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: Text("Красный", style: TextStyle(color: Colors.white),)
+              ),
+              ElevatedButton(
+                  onPressed:  () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                  child: Text("Оранжевый", style: TextStyle(color: Colors.white),)
+              ),
+              ElevatedButton(
+                  onPressed:  () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
+                  child: Text("Жёлтый", style: TextStyle(color: Colors.black),)
+              ),
+              ElevatedButton(
+                  onPressed:  () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  child: Text("Зелёный", style: TextStyle(color: Colors.white),)
+              ),
+              ElevatedButton(
+                  onPressed:  () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
+                  child: Text("Голубой", style: TextStyle(color: Colors.white),)
+              ),
+              ElevatedButton(
+                  onPressed:  () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                  child: Text("Синий", style: TextStyle(color: Colors.white),)
+              ),
+              ElevatedButton(
+                  onPressed:  () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+                  child: Text("Фиолетовый", style: TextStyle(color: Colors.white),)
+              ),
+            ],)
           ],
         ),
       ),
