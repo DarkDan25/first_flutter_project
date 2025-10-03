@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 
-Student stud = Student();
-
 void main() {
   runApp(const MyApp());
-}
-
-class Student{
-  String age = "";
-  String fio = "";
-  String group = "";
-  String favColor = "";
 }
 
 class MyApp extends StatelessWidget {
@@ -72,11 +63,6 @@ class TypeName extends StatefulWidget{
 
 class _TypeNameState extends State<TypeName>{
   final myController = TextEditingController();
-  void setName(){
-    setState(() {
-      stud.fio = myController.text;
-    });
-  }
   
   @override
   Widget build(BuildContext context){
@@ -91,7 +77,48 @@ class _TypeNameState extends State<TypeName>{
           children: <Widget>[
             Text("Введи имя"),
             TextField(controller: myController),
-            ElevatedButton(onPressed:  setName, child: Text("Далее"))
+            ElevatedButton(
+                onPressed:() {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                  },
+                child: Text("Далее"))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TypeAge extends StatefulWidget{
+  final String name;
+
+  const TypeAge({super.key, required this.name});
+
+  @override
+  State<TypeAge> createState() => _TypeAgeState();
+}
+
+class _TypeAgeState extends State<TypeAge>{
+  final myController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.name),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Введи возраст"),
+            TextField(controller: myController),
+            ElevatedButton(
+                onPressed:  () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                },
+                child: Text("Далее"))
           ],
         ),
       ),
