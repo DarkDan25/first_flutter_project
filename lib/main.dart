@@ -197,54 +197,90 @@ class _TypeColorState extends State<TypeColor>{
               children: [
               ElevatedButton(
                   onPressed:  () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FinalWidget(name: widget.name, age: widget.age, group: widget.group, color: Colors.red)));
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                   child: Text("Красный", style: TextStyle(color: Colors.white),)
               ),
               ElevatedButton(
                   onPressed:  () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FinalWidget(name: widget.name, age: widget.age, group: widget.group, color: Colors.orange)));
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
                   child: Text("Оранжевый", style: TextStyle(color: Colors.white),)
               ),
               ElevatedButton(
                   onPressed:  () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FinalWidget(name: widget.name, age: widget.age, group: widget.group, color: Colors.yellow)));
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
                   child: Text("Жёлтый", style: TextStyle(color: Colors.black),)
               ),
               ElevatedButton(
                   onPressed:  () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FinalWidget(name: widget.name, age: widget.age, group: widget.group, color: Colors.green)));
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   child: Text("Зелёный", style: TextStyle(color: Colors.white),)
               ),
               ElevatedButton(
                   onPressed:  () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FinalWidget(name: widget.name, age: widget.age, group: widget.group, color: Colors.cyan)));
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
                   child: Text("Голубой", style: TextStyle(color: Colors.white),)
               ),
               ElevatedButton(
                   onPressed:  () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FinalWidget(name: widget.name, age: widget.age, group: widget.group, color: Colors.blue)));
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                   child: Text("Синий", style: TextStyle(color: Colors.white),)
               ),
               ElevatedButton(
                   onPressed:  () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TypeAge(name: myController.text,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FinalWidget(name: widget.name, age: widget.age, group: widget.group, color: Colors.purple)));
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
                   child: Text("Фиолетовый", style: TextStyle(color: Colors.white),)
               ),
             ],)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FinalWidget extends StatefulWidget{
+  final String name;
+  final String age;
+  final String group;
+  final MaterialColor color;
+
+  const FinalWidget({super.key, required this.name, required this.age , required this.group, required this.color});
+
+  @override
+  State<FinalWidget> createState() => _FinalWidgetState();
+}
+
+class _FinalWidgetState extends State<FinalWidget>{
+  final myController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: widget.color,
+        title: Text("5. Конец"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("ФИО: ${widget.name}"),
+            Text("Возраст: ${widget.age}"),
+            Text("Группа: ${widget.group}"),
           ],
         ),
       ),
