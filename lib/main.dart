@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text("${widget.title} Практика 3"),
       ),
       body: Center(
         child: Column(
@@ -69,7 +69,7 @@ class _TypeNameState extends State<TypeName>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Введи имя"),
+        title: Text("1. Введи имя"),
       ),
       body: Center(
         child: Column(
@@ -106,13 +106,51 @@ class _TypeAgeState extends State<TypeAge>{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.name),
+        title: Text("2. ${widget.name}"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("Введи возраст"),
+            TextField(controller: myController),
+            ElevatedButton(
+                onPressed:  () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TypeGroup(age: myController.text,name: widget.name)));
+                },
+                child: Text("Далее"))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TypeGroup extends StatefulWidget{
+  final String name;
+  final String age;
+
+  const TypeGroup({super.key, required this.name, required this.age});
+
+  @override
+  State<TypeGroup> createState() => _TypeGroupState();
+}
+
+class _TypeGroupState extends State<TypeGroup>{
+  final myController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text("3. ${widget.age}"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Введи группу"),
             TextField(controller: myController),
             ElevatedButton(
                 onPressed:  () {
