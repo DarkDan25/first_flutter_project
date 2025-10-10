@@ -35,8 +35,9 @@ class _ListViewScreenState extends State<ListViewScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView(
-              children: _items.map((item) => Text(item)).toList(),
+            child: ListView.builder(
+              itemBuilder: (_,pos) => Text(_items[pos]),
+              itemCount: _items.length,
             ),
           ),
           Row(
