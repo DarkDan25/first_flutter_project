@@ -31,17 +31,13 @@ class _ColumnScreenState extends State<ColumnScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                children: _items.map((item) =>
-                    ListTile(
-                      title: Text(item),
-                    )).toList(),
+                children: _items.map((item) => Text(item)).toList(),
               ),
             ),
           ),
@@ -54,7 +50,6 @@ class _ColumnScreenState extends State<ColumnScreen> {
                     hintText: 'Введите пункт покупки',
                     border: OutlineInputBorder(),
                   ),
-                  onSubmitted: (_) => _addItem(),
                 ),
               ),
               IconButton(

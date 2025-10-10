@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'Screens/ColumnList.dart';
 import 'Screens/ListViewList.dart';
+import 'Screens/ListViewSeparatedList.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,7 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
         index: _currentIndex,
         children: const [
           ColumnScreen(),
-          ListViewScreen()
+          ListViewScreen(),
+          ListViewSeparatedScreen()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

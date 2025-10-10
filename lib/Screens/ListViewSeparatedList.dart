@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ListViewScreen extends StatefulWidget {
-  const ListViewScreen({super.key});
+class ListViewSeparatedScreen extends StatefulWidget {
+  const ListViewSeparatedScreen({super.key});
 
   @override
-  State<ListViewScreen> createState() => _ListViewScreenState();
+  State<ListViewSeparatedScreen> createState() => _ListViewSeparatedScreenState();
 }
 
-class _ListViewScreenState extends State<ListViewScreen> {
+class _ListViewSeparatedScreenState extends State<ListViewSeparatedScreen> {
   final List<String> _items = [];
   final TextEditingController _textController = TextEditingController();
 
@@ -35,8 +35,10 @@ class _ListViewScreenState extends State<ListViewScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView(
-              children: _items.map((item) => Text(item)).toList(),
+            child: ListView.separated(
+              itemCount: _items.length,
+              itemBuilder: (context, index) => Text(_items[index]),
+              separatorBuilder: (context, index) => const Divider(),
             ),
           ),
           Row(
@@ -50,6 +52,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
                   ),
                 ),
               ),
+              const SizedBox(width: 8),
               IconButton(
                 onPressed: _addItem,
                 icon: const Icon(Icons.add),
@@ -58,7 +61,7 @@ class _ListViewScreenState extends State<ListViewScreen> {
               IconButton(
                 onPressed: _removeItem,
                 icon: const Icon(Icons.remove),
-                tooltip: 'Удалить пункт',
+                tooltip: 'Удалить последний пункт',
               ),
             ],
           ),
