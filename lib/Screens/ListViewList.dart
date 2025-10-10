@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ColumnScreen extends StatefulWidget {
-  const ColumnScreen({super.key});
+class ListViewScreen extends StatefulWidget {
+  const ListViewScreen({super.key});
 
   @override
-  State<ColumnScreen> createState() => _ColumnScreenState();
+  State<ListViewScreen> createState() => _ListViewScreenState();
 }
 
-class _ColumnScreenState extends State<ColumnScreen> {
+class _ListViewScreenState extends State<ListViewScreen> {
   final List<String> _items = [];
   final TextEditingController _textController = TextEditingController();
 
@@ -36,13 +36,11 @@ class _ColumnScreenState extends State<ColumnScreen> {
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: _items.map((item) =>
-                    ListTile(
-                      title: Text(item),
-                    )).toList(),
-              ),
+            child: ListView(
+              children: _items.map((item) =>
+                  ListTile(
+                    title: Text(item),
+                  )).toList(),
             ),
           ),
           Row(
@@ -65,7 +63,7 @@ class _ColumnScreenState extends State<ColumnScreen> {
               IconButton(
                 onPressed: _removeItem,
                 icon: const Icon(Icons.remove),
-                tooltip: 'Удалить последний пункт',
+                tooltip: 'Удалить пункт',
               ),
             ],
           ),
