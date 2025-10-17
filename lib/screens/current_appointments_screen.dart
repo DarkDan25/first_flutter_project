@@ -1,74 +1,39 @@
 import 'package:flutter/material.dart';
-import '../models/appointment.dart';
+import 'package:first_flutter_project/models/appointment.dart';
+import 'package:first_flutter_project/widgets/appointment_card.dart';
 
 class CurrentAppointmentsScreen extends StatelessWidget {
-  final List<Appointment> appointments = [
-    Appointment(
-      doctorName: 'Др. Иванов',
-      specialty: 'Кардиолог',
-      date: '15.12.2023',
-      time: '10:00',
-    ),
-    Appointment(
-      doctorName: 'Др. Петрова',
-      specialty: 'Невролог',
-      date: '20.12.2023',
-      time: '14:30',
-    ),
-  ];
+  final List<Appointment> appointments;
+  final Function(String) onCancelAppointment;
+  final Function(String) onCompleteAppointment;
+
+  const CurrentAppointmentsScreen({
+    Key? key,
+    required this.appointments,
+    required this.onCancelAppointment,
+    required this.onCompleteAppointment,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Текущие записи')),
-      body: ListView.builder(
+      body: appointments.isEmpty
+          ? Center(
+        child: Text(
+          'Нет текущих записей',
+          style: TextStyle(fontSize: 18, color: Colors.grey),
+        ),
+      )
+          : ListView.builder(
         itemCount: appointments.length,
-        itemBuilder: (context, index) => AppointmentCard(appointments[index]),
-      ),
-    );
-  }
-}
-
-class AppointmentCard extends StatelessWidget {
-  final Appointment appointment;
-
-  AppointmentCard(this.appointment);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: ListTile(
-        leading: Icon(Icons.medical_services),
-        title: Text(appointment.doctorName),
-        subtitle: Text('${appointment.specialty} • ${appointment.date} ${appointment.time}'),
-        trailing: IconButton(
-          icon: Icon(Icons.cancel),
-          onPressed: () => _cancelAppointment(context),
+        itemBuilder: (context, index) => AppointmentCard(
+          appointment: appointments[index],
+          onCancel: () => onCancelAppointment(appointments[index].id),
+          onComplete: () => onCompleteAppointment(appointments[index].id),
         ),
       ),
     );
   }
-
-  void _cancelAppointment(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Отменить запись?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Нет'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Логика отмены записи
-              Navigator.pop(context);
-            },
-            child: Text('Да'),
-          ),
-        ],
-      ),
-    );
-  }
 }
+
