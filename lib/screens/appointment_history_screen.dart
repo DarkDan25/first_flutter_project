@@ -5,7 +5,7 @@ import 'package:first_flutter_project/widgets/history_card.dart';
 class AppointmentHistoryScreen extends StatelessWidget {
   final List<Appointment> historyAppointments;
 
-  const AppointmentHistoryScreen({Key? key, required this.historyAppointments}) : super(key: key);
+  const AppointmentHistoryScreen({super.key, required this.historyAppointments});
 
   @override
   Widget build(BuildContext context) {

@@ -4,10 +4,10 @@ import 'package:first_flutter_project/models/appointment.dart';
 class MakeAppointmentScreen extends StatefulWidget {
   final Function(Appointment) onAddAppointment;
 
-  const MakeAppointmentScreen({Key? key, required this.onAddAppointment}) : super(key: key);
+  const MakeAppointmentScreen({super.key, required this.onAddAppointment});
 
   @override
-  _MakeAppointmentScreenState createState() => _MakeAppointmentScreenState();
+  State<MakeAppointmentScreen> createState() => _MakeAppointmentScreenState();
 }
 
 class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {

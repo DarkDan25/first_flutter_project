@@ -4,7 +4,7 @@ import 'package:first_flutter_project/models/appointment.dart';
 class HistoryCard extends StatelessWidget {
   final Appointment appointment;
 
-  HistoryCard(this.appointment);
+  const HistoryCard(this.appointment, {super.key});
 
   @override
   Widget build(BuildContext context) {

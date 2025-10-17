@@ -8,11 +8,11 @@ class CurrentAppointmentsScreen extends StatelessWidget {
   final Function(String) onCompleteAppointment;
 
   const CurrentAppointmentsScreen({
-    Key? key,
+    super.key,
     required this.appointments,
     required this.onCancelAppointment,
     required this.onCompleteAppointment,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
