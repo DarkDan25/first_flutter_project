@@ -16,12 +16,8 @@ class HistoryCard extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Row(
           children: [
-            // Добавляем изображение врача
             CachedDoctorImage(
               imageUrl: appointment.imageUrl,
-              //localAsset: appointment.localAsset,
-              // width: 50,
-              // height: 50,
             ),
             SizedBox(width: 12),
             Expanded(

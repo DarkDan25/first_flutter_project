@@ -50,13 +50,6 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
                     value: doctorName,
                     child: Row(
                       children: [
-                        // CachedDoctorImage(
-                        //   imageUrl: doctor.imageUrl,
-                        //   //localAsset: doctor.localAsset,
-                        //   width: 40,
-                        //   height: 40,
-                        // ),
-                        // SizedBox(width: 12),
                         Text('${doctor.name} - ${doctor.specialty}'),
                       ],
                     ),
@@ -126,7 +119,6 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
         date: _selectedDate,
         time: _selectedTime,
         imageUrl: doctor.imageUrl,
-        //localAsset: doctor.localAsset,
       );
 
       widget.onAddAppointment(newAppointment);

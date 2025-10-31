@@ -21,17 +21,12 @@ class AppointmentCard extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Row(
           children: [
-            // Добавляем изображение врача
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CachedDoctorImage(
                     imageUrl: appointment.imageUrl,
-                    //localAsset: appointment.localAsset,
-                    // width: 50,
-                    // height: 50,
                   ),
                   SizedBox(width: 12),
                   Text(
