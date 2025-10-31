@@ -5,7 +5,7 @@ class Appointment {
   final String date;
   final String time;
   final String imageUrl;
-  final String localAsset;
+  //final String localAsset;
 
   Appointment({
     required this.id,
@@ -14,6 +14,6 @@ class Appointment {
     required this.date,
     required this.time,
     required this.imageUrl,
-    required this.localAsset,
+    //required this.localAsset,
   });
 }

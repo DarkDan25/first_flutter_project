@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/appointment.dart';
+import 'package:first_flutter_project/models/doctor.dart';
+import 'package:first_flutter_project/data/doctors_data.dart';
+import 'package:first_flutter_project/widgets/cached_doctor_image.dart';
 
 class MakeAppointmentScreen extends StatefulWidget {
   final Function(Appointment) onAddAppointment;
@@ -25,6 +28,10 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
     'Кузин О.М.': 'Хирург',
   };
 
+  final Map<String, Doctor> _availableDoctors = {
+    for (var doctor in DoctorsData.doctors) doctor.name: doctor
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,13 +43,31 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
           child: Column(
             children: [
               DropdownButtonFormField<String>(
-                items: _doctorSpecialties.keys
-                    .map((doctor) => DropdownMenuItem(
-                  value: doctor,
-                  child: Text('$doctor - ${_doctorSpecialties[doctor]}'),
-                ))
+                items: _availableDoctors.keys
+                    .map((doctorName) {
+                  final doctor = _availableDoctors[doctorName]!;
+                  return DropdownMenuItem(
+                    value: doctorName,
+                    child: Row(
+                      children: [
+                        // CachedDoctorImage(
+                        //   imageUrl: doctor.imageUrl,
+                        //   //localAsset: doctor.localAsset,
+                        //   width: 40,
+                        //   height: 40,
+                        // ),
+                        // SizedBox(width: 12),
+                        Text('${doctor.name} - ${doctor.specialty}'),
+                      ],
+                    ),
+                  );
+                })
                     .toList(),
-                onChanged: (value) => setState(() => _selectedDoctor = value!),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => _selectedDoctor = value);
+                  }
+                },
                 decoration: InputDecoration(
                   labelText: 'Выберите врача',
                 ),
@@ -93,12 +118,15 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      final doctor = _availableDoctors[_selectedDoctor]!;
       final newAppointment = Appointment(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         doctorName: _selectedDoctor,
         specialty: _doctorSpecialties[_selectedDoctor] ?? 'Врач',
         date: _selectedDate,
         time: _selectedTime,
+        imageUrl: doctor.imageUrl,
+        //localAsset: doctor.localAsset,
       );
 
       widget.onAddAppointment(newAppointment);
