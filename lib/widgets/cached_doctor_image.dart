@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:first_flutter_project/widgets/cached_doctor_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CachedDoctorImage extends StatelessWidget {
   final String imageUrl;
