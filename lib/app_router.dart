@@ -1,10 +1,10 @@
 import 'package:first_flutter_project/models/appointment.dart';
 import 'package:go_router/go_router.dart';
-import 'screens/login_screen.dart';
-import 'screens/current_appointments_wrapper.dart';
-import 'screens/make_appointment_screen.dart';
-import 'screens/profile_screen.dart';
-import 'screens/appointment_history_wrapper.dart';
+import 'package:first_flutter_project/screens/login_screen.dart';
+import 'package:first_flutter_project/screens/current_appointments_wrapper.dart';
+import 'package:first_flutter_project/screens/make_appointment_screen.dart';
+import 'package:first_flutter_project/screens/profile_screen.dart';
+import 'package:first_flutter_project/screens/appointment_history_wrapper.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
