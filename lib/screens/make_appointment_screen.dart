@@ -3,11 +3,9 @@ import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/models/doctor.dart';
 import 'package:first_flutter_project/data/doctors_data.dart';
 import 'package:go_router/go_router.dart';
+import 'package:first_flutter_project/app_state.dart';
 
 class MakeAppointmentScreen extends StatefulWidget {
-  final Function(Appointment) onAddAppointment;
-
-  const MakeAppointmentScreen({super.key, required this.onAddAppointment});
 
   @override
   State<MakeAppointmentScreen> createState() => _MakeAppointmentScreenState();
@@ -142,6 +140,7 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
         return;
       }
 
+      final appState = AppState.of(context);
       final doctor = _availableDoctors[_selectedDoctor!]!;
       final newAppointment = Appointment(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -152,7 +151,7 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
         imageUrl: doctor.imageUrl,
       );
 
-      widget.onAddAppointment(newAppointment);
+      appState.addAppointment(newAppointment);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Запись к $_selectedDoctor успешно создана!')),
