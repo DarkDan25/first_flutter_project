@@ -2,8 +2,10 @@ import 'package:first_flutter_project/app_router.dart';
 import 'package:first_flutter_project/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:first_flutter_project/app_state.dart';
+import 'package:first_flutter_project/locator.dart';
 
 void main() {
+  setupLocator()
   runApp(MyApp());
 }
 
