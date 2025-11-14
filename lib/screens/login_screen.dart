@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:first_flutter_project/screens/current_appointments_wrapper.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
@@ -43,10 +44,7 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 if (_usernameController.text.isNotEmpty &&
                     _passwordController.text.isNotEmpty) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => CurrentAppointmentsWrapper()),
-                  );
+                  context.go('/current');
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Заполните все поля')),

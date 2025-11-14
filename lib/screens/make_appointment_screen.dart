@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/models/doctor.dart';
 import 'package:first_flutter_project/data/doctors_data.dart';
+import 'package:go_router/go_router.dart';
 
 class MakeAppointmentScreen extends StatefulWidget {
   final Function(Appointment) onAddAppointment;
@@ -105,7 +106,7 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       style: OutlinedButton.styleFrom(
                         minimumSize: Size(0, 50),
@@ -163,7 +164,7 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
         _selectedDate = '';
         _selectedTime = '';
       });
-      Navigator.pop(context);
+      context.pop();
     }
   }
 }

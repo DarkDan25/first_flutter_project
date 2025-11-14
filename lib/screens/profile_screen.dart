@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/screens/appointment_history_wrapper.dart';
 import 'package:first_flutter_project/screens/login_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileScreen extends StatelessWidget {
   final List<Appointment> historyAppointments;
@@ -15,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
         title: Text('Профиль'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
         ),
       ),
       body: Padding(
@@ -64,14 +65,7 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AppointmentHistoryWrapper(
-                      historyAppointments: historyAppointments,
-                    ),
-                  ),
-                );
+                context.push('/history', extra: historyAppointments);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
@@ -105,16 +99,13 @@ class ProfileScreen extends StatelessWidget {
         content: Text('Вы уверены, что хотите выйти?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
             child: Text('Отмена'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
+              context.pop();
+              context.go('/');
             },
             child: Text(
               'Выйти',

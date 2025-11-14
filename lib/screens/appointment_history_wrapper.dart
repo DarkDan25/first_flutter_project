@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'appointment_history_screen.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 
@@ -19,7 +20,7 @@ class _AppointmentHistoryWrapperState extends State<AppointmentHistoryWrapper> {
         title: Text('История записей (${widget.historyAppointments.length})'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
         ),
       ),
       body: AppointmentHistoryScreen(historyAppointments: widget.historyAppointments),

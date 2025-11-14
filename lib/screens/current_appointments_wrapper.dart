@@ -3,6 +3,7 @@ import 'package:first_flutter_project/screens/current_appointments_screen.dart';
 import 'package:first_flutter_project/screens/make_appointment_screen.dart';
 import 'package:first_flutter_project/screens/profile_screen.dart';
 import 'package:first_flutter_project/models/appointment.dart';
+import 'package:go_router/go_router.dart';
 
 class CurrentAppointmentsWrapper extends StatefulWidget {
   @override
@@ -47,12 +48,7 @@ class _CurrentAppointmentsWrapperState extends State<CurrentAppointmentsWrapper>
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfileScreen(
-                  historyAppointments: _historyAppointments,
-                )),
-              );
+              context.push('/profile', extra: _historyAppointments);
             },
           ),
         ],
@@ -64,14 +60,7 @@ class _CurrentAppointmentsWrapperState extends State<CurrentAppointmentsWrapper>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MakeAppointmentScreen(
-                onAddAppointment: _addAppointment,
-              ),
-            ),
-          );
+          context.push('/make', extra: _addAppointment);
         },
         child: Icon(Icons.add),
       ),
