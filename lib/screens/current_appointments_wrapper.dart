@@ -43,6 +43,7 @@ class _CurrentAppointmentsWrapperState extends State<CurrentAppointmentsWrapper>
     return Scaffold(
       appBar: AppBar(
         title: Text('Текущие записи'),
+          automaticallyImplyLeading: false,
         actions: [
           // Кнопка для перехода к профилю
           IconButton(

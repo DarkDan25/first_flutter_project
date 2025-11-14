@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/appointment.dart';
 import 'appointment_history_wrapper.dart';
+import 'login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final List<Appointment> historyAppointments;
@@ -78,8 +79,53 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Text('Просмотреть завершенные записи (${historyAppointments.length})'),
             ),
+            SizedBox(height: 16),
+            // Новая кнопка выхода
+            OutlinedButton(
+              onPressed: () {
+                _showLogoutConfirmation(context);
+              },
+              style: OutlinedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+                side: BorderSide(color: Colors.red),
+              ),
+              child: Text(
+                'Выйти',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
           ],
         ),
+      ),
+    );
+  }
+  void _showLogoutConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Выход из системы'),
+        content: Text('Вы уверены, что хотите выйти?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Закрываем диалог
+              Navigator.pop(context);
+              // Возвращаемся на экран логина, очищая всю навигационную историю
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+            child: Text(
+              'Выйти',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
       ),
     );
   }

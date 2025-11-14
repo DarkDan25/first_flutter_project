@@ -9,7 +9,10 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Вход в систему')),
+      appBar: AppBar(
+        title: Text('Вход в систему'),
+        automaticallyImplyLeading: false
+      ),
       body: Padding(
         padding: EdgeInsets.all(24.0),
         child: Column(
