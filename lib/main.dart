@@ -1,3 +1,4 @@
+import 'package:first_flutter_project/app_router.dart';
 import 'package:first_flutter_project/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -10,12 +11,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: AppRouter.router,
       title: 'Запись к врачу',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+        debugShowCheckedModeBanner: false
     );
   }
 }
