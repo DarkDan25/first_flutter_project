@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/widgets/cached_doctor_image.dart';
+import 'package:first_flutter_project/app_state.dart';
+
 
 class AppointmentCard extends StatelessWidget {
   final Appointment appointment;
@@ -85,6 +87,7 @@ class AppointmentCard extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Запись отменена')),
               );
+              AppState.of(context).refresh();
             },
             child: Text('Да'),
           ),
@@ -111,6 +114,7 @@ class AppointmentCard extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Запись перемещена в историю')),
               );
+              AppState.of(context).refresh();
             },
             child: Text('Подтвердить'),
           ),

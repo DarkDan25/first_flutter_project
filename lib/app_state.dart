@@ -7,6 +7,7 @@ class AppState extends InheritedWidget {
   final Function(Appointment) addAppointment;
   final Function(String) cancelAppointment;
   final Function(String) completeAppointment;
+  final VoidCallback refresh;
 
   const AppState({
     Key? key,
@@ -16,6 +17,7 @@ class AppState extends InheritedWidget {
     required this.addAppointment,
     required this.cancelAppointment,
     required this.completeAppointment,
+    required this.refresh,
   }) : super(key: key, child: child);
 
   static AppState of(BuildContext context) {
@@ -45,25 +47,29 @@ class _AppStateWrapperState extends State<AppStateWrapper> {
 
   List<Appointment> _historyAppointments = [];
 
+  void _refresh(){
+    setState(() {
+
+    });
+  }
+
   void _addAppointment(Appointment newAppointment) {
     setState(() {
-      _currentAppointments.add(newAppointment);
+      _currentAppointments = [..._currentAppointments, newAppointment];
     });
   }
 
   void _cancelAppointment(String appointmentId) {
     setState(() {
-      _currentAppointments.removeWhere((appointment) => appointment.id == appointmentId);
+      _currentAppointments = _currentAppointments.where((appointment) => appointment.id != appointmentId).toList();
     });
   }
 
   void _completeAppointment(String appointmentId) {
     setState(() {
-      final appointment = _currentAppointments.firstWhere(
-            (appt) => appt.id == appointmentId,
-      );
-      _currentAppointments.removeWhere((appt) => appt.id == appointmentId);
-      _historyAppointments.add(appointment);
+      final appointment = _currentAppointments.firstWhere((appt) => appt.id == appointmentId);
+      _currentAppointments = _currentAppointments.where((appt) => appt.id != appointmentId).toList();
+      _historyAppointments = [..._historyAppointments, appointment];
     });
   }
 
@@ -75,6 +81,7 @@ class _AppStateWrapperState extends State<AppStateWrapper> {
       addAppointment: _addAppointment,
       cancelAppointment: _cancelAppointment,
       completeAppointment: _completeAppointment,
+      refresh: _refresh,
       child: widget.child,
     );
   }
