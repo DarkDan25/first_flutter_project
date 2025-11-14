@@ -13,12 +13,11 @@ class CurrentAppointmentsWrapper extends StatefulWidget {
 }
 
 class _CurrentAppointmentsWrapperState extends State<CurrentAppointmentsWrapper> {
-  final AppStateService _appStateService = getIt<AppStateService>();  // ДОБАВЛЕНО: получаем сервис
+  final AppStateService _appStateService = getIt<AppStateService>();
 
   @override
   void initState() {
     super.initState();
-    // Подписываемся на изменения
     _appStateService.addListener(_onStateChanged);
   }
 
