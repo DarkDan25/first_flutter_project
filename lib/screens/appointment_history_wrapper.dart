@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'appointment_history_screen.dart';
+import 'package:first_flutter_project/screens/appointment_history_screen.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 
 class AppointmentHistoryWrapper extends StatefulWidget {
