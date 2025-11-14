@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/widgets/appointment_card.dart';
-import 'package:first_flutter_project/app_state.dart';
 
 
-class CurrentAppointmentsScreen extends StatefulWidget {
+class CurrentAppointmentsScreen extends StatelessWidget {
   final List<Appointment> appointments;
   final Function(String) onCancelAppointment;
   final Function(String) onCompleteAppointment;
@@ -17,13 +16,8 @@ class CurrentAppointmentsScreen extends StatefulWidget {
   });
 
   @override
-  _CurrentAppointmentsScreenState createState() => _CurrentAppointmentsScreenState();
-}
-class _CurrentAppointmentsScreenState extends State<CurrentAppointmentsScreen> {
-
-  @override
   Widget build(BuildContext context) {
-    return  widget.appointments.isEmpty
+    return  appointments.isEmpty
           ? Center(
         child: Text(
           'Нет текущих записей',
@@ -31,11 +25,11 @@ class _CurrentAppointmentsScreenState extends State<CurrentAppointmentsScreen> {
         ),
       )
       : ListView.builder(
-        itemCount:widget.appointments.length,
+        itemCount:appointments.length,
         itemBuilder: (context, index) => AppointmentCard(
-          appointment: widget.appointments[index],
-          onCancel: () => widget.onCancelAppointment(widget.appointments[index].id),
-          onComplete: () => widget.onCompleteAppointment(widget.appointments[index].id),
+          appointment: appointments[index],
+          onCancel: () => onCancelAppointment(appointments[index].id),
+          onComplete: () => onCompleteAppointment(appointments[index].id),
         ),
     );
   }

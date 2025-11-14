@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'services/app_state_service.dart';
+import 'package:first_flutter_project/services/app_state_service.dart';
 
 final getIt = GetIt.instance;
 

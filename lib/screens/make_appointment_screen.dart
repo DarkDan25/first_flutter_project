@@ -3,7 +3,6 @@ import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/models/doctor.dart';
 import 'package:first_flutter_project/data/doctors_data.dart';
 import 'package:go_router/go_router.dart';
-import 'package:first_flutter_project/app_state.dart';
 import 'package:first_flutter_project/services/app_state_service.dart';
 import 'package:first_flutter_project/locator.dart';
 

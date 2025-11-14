@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/appointment.dart';
+import 'package:first_flutter_project/models/appointment.dart';
 
 class AppStateService extends ChangeNotifier {
   List<Appointment> _currentAppointments = [];

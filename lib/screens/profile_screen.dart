@@ -3,13 +3,34 @@ import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/screens/appointment_history_wrapper.dart';
 import 'package:first_flutter_project/screens/login_screen.dart';
 import 'package:go_router/go_router.dart';
-import 'package:first_flutter_project/app_state.dart';
+import 'package:first_flutter_project/services/app_state_service.dart';
+import 'package:first_flutter_project/locator.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+class _ProfileScreenState extends State<ProfileScreen> {
+  final AppStateService _appStateService = getIt<AppStateService>();
+
+  @override
+  void initState() {
+    super.initState();
+    _appStateService.addListener(_onStateChanged);
+  }
+
+  @override
+  void dispose() {
+    _appStateService.removeListener(_onStateChanged);
+    super.dispose();
+  }
+
+  void _onStateChanged() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    final appState = AppState.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Профиль'),
@@ -69,7 +90,7 @@ class ProfileScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
               ),
-              child: Text('Просмотреть завершенные записи (${appState.historyAppointments.length})'),
+              child: Text('Просмотреть завершенные записи (${_appStateService.historyAppointments.length})'),
             ),
             SizedBox(height: 16),
             OutlinedButton(
