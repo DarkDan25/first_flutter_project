@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'current_appointments_screen.dart';
-import 'make_appointment_screen.dart';
-import 'appointment_history_screen.dart';
+import 'package:first_flutter_project/screens/current_appointments_screen.dart';
+import 'package:first_flutter_project/screens/make_appointment_screen.dart';
+import 'package:first_flutter_project/screens/appointment_history_screen.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/appointment.dart';
-import 'appointment_history_wrapper.dart';
-import 'login_screen.dart';
+import 'package:first_flutter_project/models/appointment.dart';
+import 'package:first_flutter_project/screens/appointment_history_wrapper.dart';
+import 'package:first_flutter_project/screens/login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final List<Appointment> historyAppointments;

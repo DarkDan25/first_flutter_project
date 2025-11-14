@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/models/doctor.dart';
 import 'package:first_flutter_project/data/doctors_data.dart';
-import 'package:first_flutter_project/widgets/cached_doctor_image.dart';
 
 class MakeAppointmentScreen extends StatefulWidget {
   final Function(Appointment) onAddAppointment;

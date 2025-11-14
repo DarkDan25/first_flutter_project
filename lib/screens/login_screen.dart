@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'current_appointments_wrapper.dart';
+import 'package:first_flutter_project/screens/current_appointments_wrapper.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();

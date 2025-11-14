@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'current_appointments_screen.dart';
-import 'make_appointment_screen.dart';
-import 'profile_screen.dart';
-import '../models/appointment.dart';
-import '../data/doctors_data.dart';
+import 'package:first_flutter_project/screens/current_appointments_screen.dart';
+import 'package:first_flutter_project/screens/make_appointment_screen.dart';
+import 'package:first_flutter_project/screens/profile_screen.dart';
+import 'package:first_flutter_project/models/appointment.dart';
 
 class CurrentAppointmentsWrapper extends StatefulWidget {
   @override
@@ -45,7 +44,6 @@ class _CurrentAppointmentsWrapperState extends State<CurrentAppointmentsWrapper>
         title: Text('Текущие записи'),
           automaticallyImplyLeading: false,
         actions: [
-          // Кнопка для перехода к профилю
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
@@ -64,7 +62,6 @@ class _CurrentAppointmentsWrapperState extends State<CurrentAppointmentsWrapper>
         onCancelAppointment: _cancelAppointment,
         onCompleteAppointment: _completeAppointment,
       ),
-      // Кнопка для перехода к созданию записи
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
