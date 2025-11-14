@@ -19,21 +19,15 @@ class AppRouter {
       ),
       GoRoute(
         path: '/make',
-        builder: (context, state) => MakeAppointmentScreen(
-          onAddAppointment: state.extra as Function(Appointment),
-        ),
+        builder: (context, state) => MakeAppointmentScreen(),
       ),
       GoRoute(
         path: '/profile',
-        builder: (context, state) => ProfileScreen(
-          historyAppointments: state.extra as List<Appointment>,
-        ),
+        builder: (context, state) => ProfileScreen(),
       ),
       GoRoute(
         path: '/history',
-        builder: (context, state) => AppointmentHistoryWrapper(
-          historyAppointments: state.extra as List<Appointment>,
-        ),
+        builder: (context, state) => AppointmentHistoryWrapper(),
       ),
     ],
   );
