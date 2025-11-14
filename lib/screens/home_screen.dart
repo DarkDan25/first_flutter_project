@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onCancelAppointment: _cancelAppointment,
         onCompleteAppointment: _completeAppointment,
       ),
-      MakeAppointmentScreen(onAddAppointment: _addAppointment),
+      MakeAppointmentScreen(),
       AppointmentHistoryScreen(historyAppointments: _historyAppointments),
     ];
 

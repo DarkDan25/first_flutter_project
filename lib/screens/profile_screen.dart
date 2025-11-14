@@ -3,14 +3,13 @@ import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/screens/appointment_history_wrapper.dart';
 import 'package:first_flutter_project/screens/login_screen.dart';
 import 'package:go_router/go_router.dart';
+import 'package:first_flutter_project/app_state.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final List<Appointment> historyAppointments;
-
-  const ProfileScreen({Key? key, required this.historyAppointments}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final appState = AppState.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Профиль'),
@@ -65,12 +64,12 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                context.push('/history', extra: historyAppointments);
+                context.push('/history');
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
               ),
-              child: Text('Просмотреть завершенные записи (${historyAppointments.length})'),
+              child: Text('Просмотреть завершенные записи (${appState.historyAppointments.length})'),
             ),
             SizedBox(height: 16),
             OutlinedButton(
