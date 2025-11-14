@@ -43,7 +43,6 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 if (_usernameController.text.isNotEmpty &&
                     _passwordController.text.isNotEmpty) {
-                  // Переход к активным записям
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => CurrentAppointmentsWrapper()),

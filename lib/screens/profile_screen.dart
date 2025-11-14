@@ -64,7 +64,6 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                // Переход к завершенным записям с передачей истории
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -80,7 +79,6 @@ class ProfileScreen extends StatelessWidget {
               child: Text('Просмотреть завершенные записи (${historyAppointments.length})'),
             ),
             SizedBox(height: 16),
-            // Новая кнопка выхода
             OutlinedButton(
               onPressed: () {
                 _showLogoutConfirmation(context);
@@ -112,9 +110,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              // Закрываем диалог
               Navigator.pop(context);
-              // Возвращаемся на экран логина, очищая всю навигационную историю
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),

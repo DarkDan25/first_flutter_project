@@ -36,7 +36,6 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Запись к врачу'),
-        // Убираем кнопку назад
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
@@ -103,11 +102,9 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
               SizedBox(height: 24),
               Row(
                 children: [
-                  // Кнопка Отмена
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                        // Просто возвращаемся назад без сохранения
                         Navigator.pop(context);
                       },
                       style: OutlinedButton.styleFrom(
@@ -117,7 +114,6 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
                     ),
                   ),
                   SizedBox(width: 16),
-                  // Кнопка Записаться
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _submitForm,
@@ -167,8 +163,6 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
         _selectedDate = '';
         _selectedTime = '';
       });
-
-      // Возврат к списку записей после успешного создания
       Navigator.pop(context);
     }
   }
