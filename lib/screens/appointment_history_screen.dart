@@ -10,7 +10,6 @@ class AppointmentHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('История записей')),
       body: historyAppointments.isEmpty
           ? Center(
         child: Text(

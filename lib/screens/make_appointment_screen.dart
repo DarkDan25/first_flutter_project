@@ -15,7 +15,7 @@ class MakeAppointmentScreen extends StatefulWidget {
 
 class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _selectedDoctor = '';
+  String? _selectedDoctor;
   String _selectedDate = '';
   String _selectedTime = '';
 
@@ -35,41 +35,36 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Запись к врачу')),
-      body: Padding(
+      appBar: AppBar(
+        title: Text('Запись к врачу'),
+        // Убираем кнопку назад
+        automaticallyImplyLeading: false,
+      ),
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
               DropdownButtonFormField<String>(
-                items: _availableDoctors.keys
-                    .map((doctorName) {
+                value: _selectedDoctor,
+                items: _availableDoctors.keys.map((doctorName) {
                   final doctor = _availableDoctors[doctorName]!;
                   return DropdownMenuItem(
                     value: doctorName,
                     child: Row(
                       children: [
-                        // CachedDoctorImage(
-                        //   imageUrl: doctor.imageUrl,
-                        //   //localAsset: doctor.localAsset,
-                        //   width: 40,
-                        //   height: 40,
-                        // ),
-                        // SizedBox(width: 12),
                         Text('${doctor.name} - ${doctor.specialty}'),
                       ],
                     ),
                   );
-                })
-                    .toList(),
+                }).toList(),
                 onChanged: (value) {
-                  if (value != null) {
-                    setState(() => _selectedDoctor = value);
-                  }
+                  setState(() => _selectedDoctor = value);
                 },
                 decoration: InputDecoration(
                   labelText: 'Выберите врача',
+                  border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -82,6 +77,7 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Дата (дд.мм.гггг)',
+                  border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -95,6 +91,7 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Время (чч:мм)',
+                  border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -105,9 +102,33 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
                 onChanged: (value) => _selectedTime = value,
               ),
               SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('Записаться'),
+              Row(
+                children: [
+                  // Кнопка Отмена
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        // Просто возвращаемся назад без сохранения
+                        Navigator.pop(context);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size(0, 50),
+                      ),
+                      child: Text('Отмена'),
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  // Кнопка Записаться
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _submitForm,
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(0, 50),
+                      ),
+                      child: Text('Записаться'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -118,15 +139,21 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      final doctor = _availableDoctors[_selectedDoctor]!;
+      if (_selectedDoctor == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Пожалуйста, выберите врача')),
+        );
+        return;
+      }
+
+      final doctor = _availableDoctors[_selectedDoctor!]!;
       final newAppointment = Appointment(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        doctorName: _selectedDoctor,
-        specialty: _doctorSpecialties[_selectedDoctor] ?? 'Врач',
+        doctorName: _selectedDoctor!,
+        specialty: doctor.specialty,
         date: _selectedDate,
         time: _selectedTime,
         imageUrl: doctor.imageUrl,
-        //localAsset: doctor.localAsset,
       );
 
       widget.onAddAppointment(newAppointment);
@@ -137,10 +164,13 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
 
       _formKey.currentState!.reset();
       setState(() {
-        _selectedDoctor = '';
+        _selectedDoctor = null;
         _selectedDate = '';
         _selectedTime = '';
       });
+
+      // Возврат к списку записей после успешного создания
+      Navigator.pop(context);
     }
   }
 }

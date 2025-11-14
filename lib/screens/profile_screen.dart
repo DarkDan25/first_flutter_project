@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import '../models/appointment.dart';
+import 'appointment_history_wrapper.dart';
 
 class ProfileScreen extends StatelessWidget {
+  final List<Appointment> historyAppointments;
+
+  const ProfileScreen({Key? key, required this.historyAppointments}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Доктор Иванов',
+                      'Иванов Ф.П.',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -39,7 +45,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Кардиолог',
+                      'Возраст: 25 лет',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[600],
@@ -47,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      'Стаж работы: 15 лет',
+                      'Номер мед. карты: 1234567890',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -57,16 +63,20 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                // Переход к завершенным записям
+                // Переход к завершенным записям с передачей истории
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AppointmentHistoryWrapper()),
+                  MaterialPageRoute(
+                    builder: (context) => AppointmentHistoryWrapper(
+                      historyAppointments: historyAppointments,
+                    ),
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
               ),
-              child: Text('Просмотреть завершенные записи'),
+              child: Text('Просмотреть завершенные записи (${historyAppointments.length})'),
             ),
           ],
         ),
