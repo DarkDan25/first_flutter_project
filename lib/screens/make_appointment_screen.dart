@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:first_flutter_project/models/appointment.dart';
 import 'package:first_flutter_project/models/doctor.dart';
 import 'package:first_flutter_project/data/doctors_data.dart';
 import 'package:go_router/go_router.dart';
-import 'package:first_flutter_project/services/app_state_service.dart';
-import 'package:first_flutter_project/locator.dart';
+import 'package:first_flutter_project/bloc/make_appointment/make_appointment_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MakeAppointmentScreen extends StatefulWidget {
 
@@ -33,99 +32,109 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Запись к врачу'),
-        automaticallyImplyLeading: false,
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              DropdownButtonFormField<String>(
-                value: _selectedDoctor,
-                items: _availableDoctors.keys.map((doctorName) {
-                  final doctor = _availableDoctors[doctorName]!;
-                  return DropdownMenuItem(
-                    value: doctorName,
-                    child: Row(
-                      children: [
-                        Text('${doctor.name} - ${doctor.specialty}'),
-                      ],
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() => _selectedDoctor = value);
-                },
-                decoration: InputDecoration(
-                  labelText: 'Выберите врача',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Выберите врача';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Дата (дд.мм.гггг)',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Введите дату';
-                  }
-                  return null;
-                },
-                onChanged: (value) => _selectedDate = value,
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Время (чч:мм)',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Введите время';
-                  }
-                  return null;
-                },
-                onChanged: (value) => _selectedTime = value,
-              ),
-              SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        context.pop();
-                      },
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: Size(0, 50),
+    return BlocListener<MakeAppointmentBloc, MakeAppointmentState>(
+      listener: (context, state) {
+        if (state is AppointmentSubmitted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Запись к $_selectedDoctor успешно создана!')),
+          );
+          context.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Запись к врачу'),
+          automaticallyImplyLeading: false,
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                DropdownButtonFormField<String>(
+                  value: _selectedDoctor,
+                  items: _availableDoctors.keys.map((doctorName) {
+                    final doctor = _availableDoctors[doctorName]!;
+                    return DropdownMenuItem(
+                      value: doctorName,
+                      child: Row(
+                        children: [
+                          Text('${doctor.name} - ${doctor.specialty}'),
+                        ],
                       ),
-                      child: Text('Отмена'),
-                    ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() => _selectedDoctor = value);
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Выберите врача',
+                    border: OutlineInputBorder(),
                   ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(0, 50),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Выберите врача';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Дата (дд.мм.гггг)',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Введите дату';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) => _selectedDate = value,
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Время (чч:мм)',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Введите время';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) => _selectedTime = value,
+                ),
+                SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(0, 50),
+                        ),
+                        child: Text('Отмена'),
                       ),
-                      child: Text('Записаться'),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _submitForm,
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(0, 50),
+                        ),
+                        child: Text('Записаться'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -140,23 +149,14 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
         );
         return;
       }
-
-      final appStateService = getIt<AppStateService>();
       final doctor = _availableDoctors[_selectedDoctor!]!;
-      final newAppointment = Appointment(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
+      context.read<MakeAppointmentBloc>().add(SubmitAppointment(
         doctorName: _selectedDoctor!,
         specialty: doctor.specialty,
         date: _selectedDate,
         time: _selectedTime,
         imageUrl: doctor.imageUrl,
-      );
-
-      appStateService.addAppointment(newAppointment);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Запись к $_selectedDoctor успешно создана!')),
-      );
+      ));
 
       _formKey.currentState!.reset();
       setState(() {
@@ -164,7 +164,6 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
         _selectedDate = '';
         _selectedTime = '';
       });
-      context.pop();
     }
   }
 }

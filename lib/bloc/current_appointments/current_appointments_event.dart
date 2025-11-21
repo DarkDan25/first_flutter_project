@@ -26,3 +26,11 @@ class CompleteAppointment extends CurrentAppointmentsEvent {
   @override
   List<Object> get props => [appointmentId];
 }
+class AddAppointment extends CurrentAppointmentsEvent {
+  final Appointment appointment;
+
+  const AddAppointment(this.appointment);
+
+  @override
+  List<Object> get props => [appointment];
+}

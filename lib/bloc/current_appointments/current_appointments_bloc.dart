@@ -10,6 +10,7 @@ class CurrentAppointmentsBloc extends Bloc<CurrentAppointmentsEvent, CurrentAppo
     on<LoadCurrentAppointments>(_onLoadCurrentAppointments);
     on<CancelAppointment>(_onCancelAppointment);
     on<CompleteAppointment>(_onCompleteAppointment);
+    on<AddAppointment>(_onAddAppointment);
   }
 
   void _onLoadCurrentAppointments(LoadCurrentAppointments event, Emitter<CurrentAppointmentsState> emit) {
@@ -25,6 +26,10 @@ class CurrentAppointmentsBloc extends Bloc<CurrentAppointmentsEvent, CurrentAppo
     final appointment = _currentAppointments.firstWhere((appt) => appt.id == event.appointmentId);
     _currentAppointments = _currentAppointments.where((appt) => appt.id != event.appointmentId).toList();
     // Здесь можно отправить событие в HistoryBloc для добавления в историю
+    emit(CurrentAppointmentsLoaded(_currentAppointments));
+  }
+  void _onAddAppointment(AddAppointment event, Emitter<CurrentAppointmentsState> emit) {
+    _currentAppointments = [..._currentAppointments, event.appointment];
     emit(CurrentAppointmentsLoaded(_currentAppointments));
   }
 

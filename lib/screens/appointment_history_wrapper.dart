@@ -1,44 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'appointment_history_screen.dart';
-import 'package:first_flutter_project/models/appointment.dart';
-import 'package:first_flutter_project/services/app_state_service.dart';
-import 'package:first_flutter_project/locator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:first_flutter_project/bloc/history/history_bloc.dart';
 
 
-class AppointmentHistoryWrapper extends StatefulWidget {
-  @override
-  _AppointmentHistoryWrapperState createState() => _AppointmentHistoryWrapperState();
-}
-class _AppointmentHistoryWrapperState extends State<AppointmentHistoryWrapper> {
-  final AppStateService _appStateService = getIt<AppStateService>();
-
-  @override
-  void initState() {
-    super.initState();
-    _appStateService.addListener(_onStateChanged);
-  }
-
-  @override
-  void dispose() {
-    _appStateService.removeListener(_onStateChanged);
-    super.dispose();
-  }
-
-  void _onStateChanged() {
-    setState(() {});
-  }
+class AppointmentHistoryWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('История записей (${_appStateService.historyAppointments.length})'),
+        title: BlocBuilder<HistoryBloc, HistoryState>(
+          builder: (context, state) {
+            int count = 0;
+            if (state is HistoryLoaded) {
+              count = state.appointments.length;
+            }
+            return Text('История записей ($count)');
+          },
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
       ),
-      body: AppointmentHistoryScreen(historyAppointments: _appStateService.historyAppointments),
+      body: BlocBuilder<HistoryBloc, HistoryState>(
+        builder: (context, state) {
+          if (state is HistoryLoaded) {
+            return AppointmentHistoryScreen(historyAppointments: state.appointments);
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 }

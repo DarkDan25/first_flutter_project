@@ -1,116 +1,124 @@
 import 'package:flutter/material.dart';
-import 'package:first_flutter_project/models/appointment.dart';
-import 'package:first_flutter_project/screens/appointment_history_wrapper.dart';
-import 'package:first_flutter_project/screens/login_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:first_flutter_project/services/app_state_service.dart';
-import 'package:first_flutter_project/locator.dart';
+import '../bloc/history/history_bloc.dart';
+import '../bloc/profile/profile_bloc.dart';    // ← ДОБАВЛЕНО
 
-class ProfileScreen extends StatefulWidget {
-  @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
-class _ProfileScreenState extends State<ProfileScreen> {
-  final AppStateService _appStateService = getIt<AppStateService>();
-
-  @override
-  void initState() {
-    super.initState();
-    _appStateService.addListener(_onStateChanged);
-  }
-
-  @override
-  void dispose() {
-    _appStateService.removeListener(_onStateChanged);
-    super.dispose();
-  }
-
-  void _onStateChanged() {
-    setState(() {});
-  }
-
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Профиль'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+    return BlocListener<ProfileBloc, ProfileState>(
+      listener: (context, state) {
+        if (state is ProfileLogoutSuccess) {
+          context.go('/');
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Профиль'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => context.pop(),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.blue,
-                child: Icon(Icons.person, size: 50, color: Colors.white),
-              ),
-            ),
-            SizedBox(height: 24),
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Иванов Ф.П.',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, profileState) {
+            return BlocBuilder<HistoryBloc, HistoryState>(
+              builder: (context, historyState) {
+                String name = 'Павлов Д.Е.';
+                String age = '30 лет';
+                String medCardId = '09876544321';
+
+                if (profileState is ProfileLoadSuccess) {
+                  name = profileState.name;
+                  age = profileState.age;
+                  medCardId = profileState.medCardId;
+                }
+
+                // Получаем количество записей из HistoryBloc
+                int historyCount = 0;
+                if (historyState is HistoryLoaded) {
+                  historyCount = historyState.appointments.length;
+                }
+
+                return Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.blue,
+                          child: Icon(Icons.person, size: 50, color: Colors.white),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Возраст: 25 лет',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
+                      SizedBox(height: 24),
+                      Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                name,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Возраст: $age',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                'Номер мед. карты: $medCardId',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Номер мед. карты: 1234567890',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                context.push('/history');
+                      SizedBox(height: 24),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/history');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 50),
+                        ),
+                        child: Text('Просмотреть завершенные записи ($historyCount)'),
+                      ),
+                      SizedBox(height: 16),
+                      OutlinedButton(
+                        onPressed: () {
+                          _showLogoutConfirmation(context);
+                        },
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 50),
+                          side: BorderSide(color: Colors.red),
+                        ),
+                        child: Text(
+                          'Выйти',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
-              child: Text('Просмотреть завершенные записи (${_appStateService.historyAppointments.length})'),
-            ),
-            SizedBox(height: 16),
-            OutlinedButton(
-              onPressed: () {
-                _showLogoutConfirmation(context);
-              },
-              style: OutlinedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-                side: BorderSide(color: Colors.red),
-              ),
-              child: Text(
-                'Выйти',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
   }
+
   void _showLogoutConfirmation(BuildContext context) {
     showDialog(
       context: context,
@@ -125,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextButton(
             onPressed: () {
               context.pop();
-              context.go('/');
+              context.read<ProfileBloc>().add(ProfileLogoutRequested());
             },
             child: Text(
               'Выйти',

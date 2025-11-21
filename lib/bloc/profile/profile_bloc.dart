@@ -13,8 +13,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   void _onProfileLoadRequested(ProfileLoadRequested event, Emitter<ProfileState> emit) {
     emit(ProfileLoadSuccess(
       name: 'Иванов Ф.П.',
-      age: 'Возраст: 25 лет',
-      medCardId: 'Номер мед. карты: 1234567890',
+      age: '25 лет',
+      medCardId: '1234567890',
     ));
   }
 
