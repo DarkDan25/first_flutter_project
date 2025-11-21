@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:first_flutter_project/models/appointment.dart';
-import 'package:first_flutter_project/data/doctors_data.dart';
 
 part 'make_appointment_event.dart';
 part 'make_appointment_state.dart';

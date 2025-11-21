@@ -25,7 +25,6 @@ class CurrentAppointmentsBloc extends Bloc<CurrentAppointmentsEvent, CurrentAppo
   void _onCompleteAppointment(CompleteAppointment event, Emitter<CurrentAppointmentsState> emit) {
     final appointment = _currentAppointments.firstWhere((appt) => appt.id == event.appointmentId);
     _currentAppointments = _currentAppointments.where((appt) => appt.id != event.appointmentId).toList();
-    // Здесь можно отправить событие в HistoryBloc для добавления в историю
     emit(CurrentAppointmentsLoaded(_currentAppointments));
   }
   void _onAddAppointment(AddAppointment event, Emitter<CurrentAppointmentsState> emit) {
