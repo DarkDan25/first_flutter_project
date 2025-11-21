@@ -11,17 +11,17 @@ class ProfileInitial extends ProfileState {}
 
 class ProfileLoadSuccess extends ProfileState {
   final String name;
-  final String specialty;
-  final String experience;
+  final String age;
+  final String medCardId;
 
   const ProfileLoadSuccess({
     required this.name,
-    required this.specialty,
-    required this.experience,
+    required this.age,
+    required this.medCardId,
   });
 
   @override
-  List<Object> get props => [name, specialty, experience];
+  List<Object> get props => [name, age, medCardId];
 }
 
 class ProfileLogoutSuccess extends ProfileState {}
