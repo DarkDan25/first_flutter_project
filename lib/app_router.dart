@@ -1,4 +1,4 @@
-import 'package:first_flutter_project/models/appointment.dart';
+import 'package:first_flutter_project/screens/clinic_info_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:first_flutter_project/screens/login_screen.dart';
 import 'package:first_flutter_project/screens/current_appointments_wrapper.dart';
@@ -28,6 +28,10 @@ class AppRouter {
       GoRoute(
         path: '/history',
         builder: (context, state) => AppointmentHistoryWrapper(),
+      ),
+      GoRoute(
+        path: '/clinic_info',
+        builder: (context, state) => ClinicInfoScreen(),
       ),
     ],
   );

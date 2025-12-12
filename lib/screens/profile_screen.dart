@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../bloc/history/history_bloc.dart';
-import '../bloc/profile/profile_bloc.dart';    // ← ДОБАВЛЕНО
+import '../bloc/profile/profile_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -34,13 +34,10 @@ class ProfileScreen extends StatelessWidget {
                   age = profileState.age;
                   medCardId = profileState.medCardId;
                 }
-
-                // Получаем количество записей из HistoryBloc
                 int historyCount = 0;
                 if (historyState is HistoryLoaded) {
                   historyCount = historyState.appointments.length;
                 }
-
                 return Padding(
                   padding: EdgeInsets.all(24.0),
                   child: Column(

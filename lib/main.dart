@@ -7,6 +7,8 @@ import 'package:first_flutter_project/bloc/make_appointment/make_appointment_blo
 import 'package:first_flutter_project/bloc/login/login_bloc.dart';
 import 'package:first_flutter_project/bloc/profile/profile_bloc.dart';
 
+import 'bloc/clinic_info/clinic_info_bloc.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -32,6 +34,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<ProfileBloc>(
             create: (context) => ProfileBloc()..add(ProfileLoadRequested()),
+          ),
+          BlocProvider<ClinicInfoBloc>(
+            create: (context) => ClinicInfoBloc()..add(LoadClinicInfo()),
           ),
         ],
         child: MaterialApp.router(
