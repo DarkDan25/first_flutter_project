@@ -15,22 +15,16 @@ class MedicalCardUpdater extends StatelessWidget {
     return MultiBlocListener(
       listeners: [
         BlocListener<CurrentAppointmentsBloc, CurrentAppointmentsState>(
-          listener: (context, state) {
-            if (state is CurrentAppointmentsLoaded) {
-              final nextAppointment = _findNextAppointment(state.appointments);
-              context.read<MedicalCardBloc>().add(UpdateAppointmentsInfo(
-                nextAppointment: nextAppointment,
-              ));
+          listener: (context, currentState) {
+            if (currentState is CurrentAppointmentsLoaded) {
+              _updateAppointmentsFromCurrent(context, currentState);
             }
           },
         ),
         BlocListener<HistoryBloc, HistoryState>(
-          listener: (context, state) {
-            if (state is HistoryLoaded) {
-              final lastAppointment = _findLastAppointment(state.appointments);
-              context.read<MedicalCardBloc>().add(UpdateAppointmentsInfo(
-                lastAppointment: lastAppointment,
-              ));
+          listener: (context, historyState) {
+            if (historyState is HistoryLoaded) {
+              _updateAppointmentsFromHistory(context, historyState);
             }
           },
         ),
@@ -39,13 +33,53 @@ class MedicalCardUpdater extends StatelessWidget {
     );
   }
 
+  void _updateAppointmentsFromCurrent(BuildContext context, CurrentAppointmentsLoaded currentState) {
+    final historyState = context.read<HistoryBloc>().state;
+    Appointment? lastAppointment;
+    Appointment? nextAppointment;
+
+    if (currentState.appointments.isNotEmpty) {
+      nextAppointment = _findNextAppointment(currentState.appointments);
+    }
+
+    if (historyState is HistoryLoaded && historyState.appointments.isNotEmpty) {
+      lastAppointment = _findLastAppointment(historyState.appointments);
+    }
+
+    context.read<MedicalCardBloc>().add(UpdateAppointmentsInfo(
+      lastAppointment: lastAppointment,
+      nextAppointment: nextAppointment,
+    ));
+  }
+
+  void _updateAppointmentsFromHistory(BuildContext context, HistoryLoaded historyState) {
+    final currentState = context.read<CurrentAppointmentsBloc>().state;
+    Appointment? lastAppointment;
+    Appointment? nextAppointment;
+
+    if (historyState.appointments.isNotEmpty) {
+      lastAppointment = _findLastAppointment(historyState.appointments);
+    }
+
+    if (currentState is CurrentAppointmentsLoaded && currentState.appointments.isNotEmpty) {
+      nextAppointment = _findNextAppointment(currentState.appointments);
+    }
+
+    context.read<MedicalCardBloc>().add(UpdateAppointmentsInfo(
+      lastAppointment: lastAppointment,
+      nextAppointment: nextAppointment,
+    ));
+  }
+
   Appointment? _findNextAppointment(List<Appointment> appointments) {
     if (appointments.isEmpty) return null;
+
     return appointments.first;
   }
 
   Appointment? _findLastAppointment(List<Appointment> appointments) {
     if (appointments.isEmpty) return null;
+
     return appointments.last;
   }
 }
