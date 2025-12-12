@@ -20,6 +20,12 @@ class CurrentAppointmentsWrapper extends StatelessWidget {
           title: Text('Текущие записи'),
           actions: [
             IconButton(
+              icon: Icon(Icons.medical_services),
+              onPressed: () {
+                context.push('/doctors_management');
+              },
+            ),
+            IconButton(
               icon: Icon(Icons.info),
               onPressed: () {
                 context.push('/clinic_info');

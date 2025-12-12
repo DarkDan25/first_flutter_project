@@ -1,4 +1,5 @@
 import 'package:first_flutter_project/screens/clinic_info_screen.dart';
+import 'package:first_flutter_project/screens/doctors_management_screen.dart';
 import 'package:first_flutter_project/screens/medical_card_screen.dart';
 import 'package:first_flutter_project/screens/prescriptions_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -42,6 +43,10 @@ class AppRouter {
       GoRoute(
         path: '/prescriptions',
         builder: (context, state) => PrescriptionsScreen(),
+      ),
+      GoRoute(
+        path: '/doctors_management',
+        builder: (context, state) => DoctorsManagementScreen(),
       ),
     ],
   );
