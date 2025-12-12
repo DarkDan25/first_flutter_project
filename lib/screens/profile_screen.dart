@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../bloc/history/history_bloc.dart';
-import '../bloc/profile/profile_bloc.dart';
+import 'package:first_flutter_project/bloc/history/history_bloc.dart';
+import 'package:first_flutter_project/bloc/profile/profile_bloc.dart';
+import 'package:first_flutter_project/bloc/medical_card/medical_card_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -21,18 +22,18 @@ class ProfileScreen extends StatelessWidget {
             onPressed: () => context.pop(),
           ),
         ),
-        body: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, profileState) {
+        body: BlocBuilder<MedicalCardBloc, MedicalCardState>(
+          builder: (context, medicalCardState) {
             return BlocBuilder<HistoryBloc, HistoryState>(
               builder: (context, historyState) {
                 String name = 'Павлов Д.Е.';
                 String age = '30 лет';
                 String medCardId = '09876544321';
 
-                if (profileState is ProfileLoadSuccess) {
-                  name = profileState.name;
-                  age = profileState.age;
-                  medCardId = profileState.medCardId;
+                if (medicalCardState is MedicalCardLoaded) {
+                  name = medicalCardState.patientName;
+                  age = medicalCardState.age;
+                  medCardId = medicalCardState.medCardId;
                 }
                 int historyCount = 0;
                 if (historyState is HistoryLoaded) {
@@ -80,6 +81,16 @@ class ProfileScreen extends StatelessWidget {
                             ],
                           ),
                         ),
+                      ),
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/medical_card');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 50),
+                        ),
+                        child: Text('Медицинская карта'),
                       ),
                       SizedBox(height: 24),
                       ElevatedButton(
