@@ -26,9 +26,9 @@ class ProfileScreen extends StatelessWidget {
           builder: (context, medicalCardState) {
             return BlocBuilder<HistoryBloc, HistoryState>(
               builder: (context, historyState) {
-                String name = 'Павлов Д.Е.';
-                String age = '30 лет';
-                String medCardId = '09876544321';
+                String name = 'Ошибка загрузки';
+                String age = 'Ошибка загрузки';
+                String medCardId = 'ошибка загрузки';
 
                 if (medicalCardState is MedicalCardLoaded) {
                   name = medicalCardState.patientName;
@@ -92,7 +92,17 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         child: Text('Медицинская карта'),
                       ),
-                      SizedBox(height: 24),
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/prescriptions');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 50),
+                        ),
+                        child: Text('Выписанные рецепты'),
+                      ),
+                      SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
                           context.push('/history');

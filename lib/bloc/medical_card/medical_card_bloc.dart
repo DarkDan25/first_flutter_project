@@ -20,10 +20,6 @@ class MedicalCardBloc extends Bloc<MedicalCardEvent, MedicalCardState> {
       allergies: 'Пыльца, антибиотики',
       chronicDiseases: 'Бронхиальная астма (легкая форма)',
       notes: 'Пациент регулярно проходит профилактические осмотры.',
-      medications: [
-        'Сальбутамол - 100 мкг, 2 раза в день',
-        'Лоратадин - 10 мг, 1 раз в день',
-      ],
       lastAppointment: null,
       nextAppointment: null,
     ));
@@ -40,7 +36,6 @@ class MedicalCardBloc extends Bloc<MedicalCardEvent, MedicalCardState> {
         allergies: currentState.allergies,
         chronicDiseases: currentState.chronicDiseases,
         notes: currentState.notes,
-        medications: currentState.medications,
         lastAppointment: event.lastAppointment,
         nextAppointment: event.nextAppointment,
       ));

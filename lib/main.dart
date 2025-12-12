@@ -9,6 +9,7 @@ import 'package:first_flutter_project/bloc/login/login_bloc.dart';
 import 'package:first_flutter_project/bloc/profile/profile_bloc.dart';
 import 'package:first_flutter_project/bloc/clinic_info/clinic_info_bloc.dart';
 import 'package:first_flutter_project/bloc/medical_card/medical_card_bloc.dart';
+import 'package:first_flutter_project/bloc/prescriptions/prescriptions_bloc.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<MedicalCardBloc>(
             create: (context) => MedicalCardBloc()..add(LoadMedicalCard()),
+          ),
+          BlocProvider<PrescriptionsBloc>(
+            create: (context) => PrescriptionsBloc()..add(LoadPrescriptions()),
           ),
         ],
         child: MedicalCardUpdater(

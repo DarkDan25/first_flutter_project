@@ -17,7 +17,6 @@ class MedicalCardLoaded extends MedicalCardState {
   final String allergies;
   final String chronicDiseases;
   final String notes;
-  final List<String> medications;
   final Appointment? lastAppointment;
   final Appointment? nextAppointment;
 
@@ -29,7 +28,6 @@ class MedicalCardLoaded extends MedicalCardState {
     required this.allergies,
     required this.chronicDiseases,
     required this.notes,
-    required this.medications,
     this.lastAppointment,
     this.nextAppointment,
   });
@@ -43,7 +41,6 @@ class MedicalCardLoaded extends MedicalCardState {
     allergies,
     chronicDiseases,
     notes,
-    medications,
     if (lastAppointment != null) lastAppointment!,
     if (nextAppointment != null) nextAppointment!,
   ];

@@ -77,35 +77,6 @@ class MedicalCardScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Назначения',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 12),
-                  ...state.medications.map((medication) =>
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(Icons.medical_services, size: 16, color: Colors.blue),
-                            SizedBox(width: 8),
-                            Expanded(child: Text(medication)),
-                          ],
-                        ),
-                      )
-                  ).toList(),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 16),
-          Card(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
                     'Посещения',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
