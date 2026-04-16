@@ -1,0 +1,10 @@
+com\example\clinic\controller\AppointmentController.class
+com\example\clinic\entity\Appointment.class
+com\example\clinic\repository\AppointmentRepository.class
+com\example\clinic\entity\Doctor.class
+com\example\clinic\entity\Admin.class
+com\example\clinic\controller\DoctorController.class
+com\example\clinic\entity\Patient.class
+com\example\clinic\repository\DoctorRepository.class
+com\example\clinic\ClinicApplication.class
+com\example\clinic\repository\PatientRepository.class
