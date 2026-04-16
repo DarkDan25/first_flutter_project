@@ -28,8 +28,8 @@ class CurrentAppointmentsScreen extends StatelessWidget {
         itemCount:appointments.length,
         itemBuilder: (context, index) => AppointmentCard(
           appointment: appointments[index],
-          onCancel: () => onCancelAppointment(appointments[index].id),
-          onComplete: () => onCompleteAppointment(appointments[index].id),
+          onCancel: () => onCancelAppointment(appointments[index].id as String),
+          onComplete: () => onCompleteAppointment(appointments[index].id as String),
         ),
     );
   }

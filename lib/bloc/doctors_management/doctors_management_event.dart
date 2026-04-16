@@ -29,10 +29,10 @@ class UpdateDoctor extends DoctorsManagementEvent {
 }
 
 class DeleteDoctor extends DoctorsManagementEvent {
-  final String doctorName;
+  final int doctorId;
 
-  const DeleteDoctor(this.doctorName);
+  const DeleteDoctor(this.doctorId);
 
   @override
-  List<Object> get props => [doctorName];
+  List<Object> get props => [doctorId];
 }

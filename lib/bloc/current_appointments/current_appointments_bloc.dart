@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:first_flutter_project/models/appointment.dart';
+import 'package:first_flutter_project/services/api_service.dart';
 
 part 'current_appointments_event.dart';
 part 'current_appointments_state.dart';
@@ -13,24 +14,32 @@ class CurrentAppointmentsBloc extends Bloc<CurrentAppointmentsEvent, CurrentAppo
     on<AddAppointment>(_onAddAppointment);
   }
 
-  void _onLoadCurrentAppointments(LoadCurrentAppointments event, Emitter<CurrentAppointmentsState> emit) {
-    emit(CurrentAppointmentsLoaded(_currentAppointments));
+  List<Appointment> _currentAppointments = [];
+
+  Future<void> _onLoadCurrentAppointments(LoadCurrentAppointments event, Emitter<CurrentAppointmentsState> emit) async {
+    try {
+      _currentAppointments = await ApiService.getAppointments();
+      // Filter for current appointments (status: Ожидается)
+      _currentAppointments = _currentAppointments.where((a) => a.status == 'Ожидается').toList();
+      emit(CurrentAppointmentsLoaded(_currentAppointments));
+    } catch (e) {
+      emit(const CurrentAppointmentsLoaded([]));
+    }
   }
 
-  void _onCancelAppointment(CancelAppointment event, Emitter<CurrentAppointmentsState> emit) {
+  Future<void> _onCancelAppointment(CancelAppointment event, Emitter<CurrentAppointmentsState> emit) async {
+    // Implement cancel on backend if needed
     _currentAppointments = _currentAppointments.where((appointment) => appointment.id != event.appointmentId).toList();
     emit(CurrentAppointmentsLoaded(_currentAppointments));
   }
 
-  void _onCompleteAppointment(CompleteAppointment event, Emitter<CurrentAppointmentsState> emit) {
-    final appointment = _currentAppointments.firstWhere((appt) => appt.id == event.appointmentId);
+  Future<void> _onCompleteAppointment(CompleteAppointment event, Emitter<CurrentAppointmentsState> emit) async {
     _currentAppointments = _currentAppointments.where((appt) => appt.id != event.appointmentId).toList();
     emit(CurrentAppointmentsLoaded(_currentAppointments));
   }
+
   void _onAddAppointment(AddAppointment event, Emitter<CurrentAppointmentsState> emit) {
     _currentAppointments = [..._currentAppointments, event.appointment];
     emit(CurrentAppointmentsLoaded(_currentAppointments));
   }
-
-  List<Appointment> _currentAppointments = [];
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/doctor.dart';
-import 'package:first_flutter_project/data/doctors_data.dart';
 import 'package:go_router/go_router.dart';
 import 'package:first_flutter_project/bloc/make_appointment/make_appointment_bloc.dart';
+import 'package:first_flutter_project/bloc/doctors_management/doctors_management_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MakeAppointmentScreen extends StatefulWidget {
+  const MakeAppointmentScreen({super.key});
 
   @override
   State<MakeAppointmentScreen> createState() => _MakeAppointmentScreenState();
@@ -13,22 +14,15 @@ class MakeAppointmentScreen extends StatefulWidget {
 
 class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
   final _formKey = GlobalKey<FormState>();
-  String? _selectedDoctor;
+  Doctor? _selectedDoctor;
   String _selectedDate = '';
   String _selectedTime = '';
 
-  final Map<String, String> _doctorSpecialties = {
-    'Иванов И.И.': 'Кардиолог',
-    'Петрова А.Д.': 'Невролог',
-    'Сидоров Е.В.': 'Терапевт',
-    'Кузнецова К.Н.': 'Стоматолог',
-    'Симанович В.Г.': 'Хирург',
-    'Кузин О.М.': 'Хирург',
-  };
-
-  final Map<String, Doctor> _availableDoctors = {
-    for (var doctor in DoctorsData.doctors) doctor.name: doctor
-  };
+  @override
+  void initState() {
+    super.initState();
+    context.read<DoctorsManagementBloc>().add(LoadDoctors());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,106 +30,111 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
       listener: (context, state) {
         if (state is AppointmentSubmitted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Запись к $_selectedDoctor успешно создана!')),
+            SnackBar(content: Text('Запись к ${_selectedDoctor?.fullName} успешно создана!')),
           );
           context.pop();
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Запись к врачу'),
+          title: const Text('Запись к врачу'),
           automaticallyImplyLeading: false,
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                DropdownButtonFormField<String>(
-                  value: _selectedDoctor,
-                  items: _availableDoctors.keys.map((doctorName) {
-                    final doctor = _availableDoctors[doctorName]!;
-                    return DropdownMenuItem(
-                      value: doctorName,
-                      child: Row(
-                        children: [
-                          Text('${doctor.name} - ${doctor.specialty}'),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() => _selectedDoctor = value);
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Выберите врача',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Выберите врача';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Дата (дд.мм.гггг)',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Введите дату';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) => _selectedDate = value,
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Время (чч:мм)',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Введите время';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) => _selectedTime = value,
-                ),
-                SizedBox(height: 24),
-                Row(
+        body: BlocBuilder<DoctorsManagementBloc, DoctorsManagementState>(
+          builder: (context, state) {
+            if (state is! DoctorsLoaded) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            final availableDoctors = state.doctors;
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
                   children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          context.pop();
-                        },
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: Size(0, 50),
-                        ),
-                        child: Text('Отмена'),
+                    DropdownButtonFormField<Doctor>(
+                      value: _selectedDoctor,
+                      items: availableDoctors.map((doctor) {
+                        return DropdownMenuItem(
+                          value: doctor,
+                          child: Text('${doctor.fullName} - ${doctor.specialty}'),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() => _selectedDoctor = value);
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'Выберите врача',
+                        border: OutlineInputBorder(),
                       ),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Выберите врача';
+                        }
+                        return null;
+                      },
                     ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _submitForm,
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(0, 50),
-                        ),
-                        child: Text('Записаться'),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Дата (гггг-мм-дд)',
+                        border: OutlineInputBorder(),
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Введите дату';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) => _selectedDate = value,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Время (чч:мм)',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Введите время';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) => _selectedTime = value,
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(0, 50),
+                            ),
+                            child: const Text('Отмена'),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _submitForm,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(0, 50),
+                            ),
+                            child: const Text('Записаться'),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -145,16 +144,14 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
     if (_formKey.currentState!.validate()) {
       if (_selectedDoctor == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Пожалуйста, выберите врача')),
+          const SnackBar(content: Text('Пожалуйста, выберите врача')),
         );
         return;
       }
-      final doctor = _availableDoctors[_selectedDoctor!]!;
+      
       context.read<MakeAppointmentBloc>().add(SubmitAppointment(
-        doctorName: _selectedDoctor!,
-        specialty: doctor.specialty,
-        date: _selectedDate,
-        time: _selectedTime,
+        doctor: _selectedDoctor!,
+        date: '$_selectedDate $_selectedTime',
       ));
 
       _formKey.currentState!.reset();

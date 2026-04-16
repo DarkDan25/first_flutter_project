@@ -9,9 +9,9 @@ class HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             Expanded(
@@ -19,18 +19,18 @@ class HistoryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    appointment.doctorName,
-                    style: TextStyle(
+                    appointment.doctor.fullName,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(appointment.specialty),
-                  SizedBox(height: 4),
-                  Text('${appointment.date} ${appointment.time}'),
-                  SizedBox(height: 4),
-                  Text(
+                  const SizedBox(height: 4),
+                  Text(appointment.doctor.specialty),
+                  const SizedBox(height: 4),
+                  Text(appointment.date),
+                  const SizedBox(height: 4),
+                  const Text(
                     'Завершено',
                     style: TextStyle(
                       color: Colors.green,

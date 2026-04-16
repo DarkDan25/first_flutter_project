@@ -8,18 +8,14 @@ abstract class MakeAppointmentEvent extends Equatable {
 }
 
 class SubmitAppointment extends MakeAppointmentEvent {
-  final String doctorName;
-  final String specialty;
+  final Doctor doctor;
   final String date;
-  final String time;
 
   const SubmitAppointment({
-    required this.doctorName,
-    required this.specialty,
+    required this.doctor,
     required this.date,
-    required this.time,
   });
 
   @override
-  List<Object> get props => [doctorName, specialty, date, time];
+  List<Object> get props => [doctor, date];
 }

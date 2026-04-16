@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:first_flutter_project/models/appointment.dart';
+import 'package:first_flutter_project/models/doctor.dart';
+import 'package:first_flutter_project/services/api_service.dart';
 
 part 'make_appointment_event.dart';
 part 'make_appointment_state.dart';
@@ -10,15 +12,18 @@ class MakeAppointmentBloc extends Bloc<MakeAppointmentEvent, MakeAppointmentStat
     on<SubmitAppointment>(_onSubmitAppointment);
   }
 
-  void _onSubmitAppointment(SubmitAppointment event, Emitter<MakeAppointmentState> emit) {
-    final newAppointment = Appointment(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      doctorName: event.doctorName,
-      specialty: event.specialty,
-      date: event.date,
-      time: event.time,
-    );
+  Future<void> _onSubmitAppointment(SubmitAppointment event, Emitter<MakeAppointmentState> emit) async {
+    try {
+      final newAppointment = Appointment(
+        doctor: event.doctor,
+        date: event.date,
+        status: 'Ожидается',
+      );
 
-    emit(AppointmentSubmitted(newAppointment));
+      final savedAppointment = await ApiService.addAppointment(newAppointment);
+      emit(AppointmentSubmitted(savedAppointment));
+    } catch (e) {
+      // Handle error
+    }
   }
 }

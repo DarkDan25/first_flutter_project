@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:first_flutter_project/models/doctor.dart';
-import 'package:first_flutter_project/data/doctors_data.dart';
+import 'package:first_flutter_project/services/api_service.dart';
 
 part 'doctors_management_event.dart';
 part 'doctors_management_state.dart';
@@ -16,39 +16,48 @@ class DoctorsManagementBloc extends Bloc<DoctorsManagementEvent, DoctorsManageme
 
   List<Doctor> _doctors = [];
 
-  void _onLoadDoctors(LoadDoctors event, Emitter<DoctorsManagementState> emit) {
-    _doctors = List.from(DoctorsData.doctors);
-    emit(DoctorsLoaded(_doctors));
-  }
-
-  void _onAddDoctor(AddDoctor event, Emitter<DoctorsManagementState> emit) {
-    _doctors = [..._doctors, event.doctor];
-
-    DoctorsData.doctors.add(event.doctor);
-
-    emit(DoctorsLoaded(List.from(_doctors)));
-  }
-
-  void _onUpdateDoctor(UpdateDoctor event, Emitter<DoctorsManagementState> emit) {
-    final index = _doctors.indexWhere((d) => d.name == event.oldDoctor.name);
-    if (index != -1) {
-      final newDoctors = List<Doctor>.from(_doctors);
-      newDoctors[index] = event.newDoctor;
-      _doctors = newDoctors;
-
-      final staticIndex = DoctorsData.doctors.indexWhere((d) => d.name == event.oldDoctor.name);
-      if (staticIndex != -1) {
-        DoctorsData.doctors[staticIndex] = event.newDoctor;
-      }
+  Future<void> _onLoadDoctors(LoadDoctors event, Emitter<DoctorsManagementState> emit) async {
+    try {
+      _doctors = await ApiService.getDoctors();
+      emit(DoctorsLoaded(_doctors));
+    } catch (e) {
+      // For simplicity, just emit empty list or handle error
+      emit(const DoctorsLoaded([]));
     }
-    emit(DoctorsLoaded(List.from(_doctors)));
   }
 
-  void _onDeleteDoctor(DeleteDoctor event, Emitter<DoctorsManagementState> emit) {
-    _doctors = _doctors.where((doctor) => doctor.name != event.doctorName).toList();
+  Future<void> _onAddDoctor(AddDoctor event, Emitter<DoctorsManagementState> emit) async {
+    try {
+      final newDoctor = await ApiService.addDoctor(event.doctor);
+      _doctors = [..._doctors, newDoctor];
+      emit(DoctorsLoaded(List.from(_doctors)));
+    } catch (e) {
+      // Handle error
+    }
+  }
 
-    DoctorsData.doctors.removeWhere((doctor) => doctor.name == event.doctorName);
+  Future<void> _onUpdateDoctor(UpdateDoctor event, Emitter<DoctorsManagementState> emit) async {
+    try {
+      if (event.oldDoctor.id != null) {
+        final updatedDoctor = await ApiService.addDoctor(event.newDoctor); // In my ApiService addDoctor acts as save
+        final index = _doctors.indexWhere((d) => d.id == event.oldDoctor.id);
+        if (index != -1) {
+          _doctors[index] = updatedDoctor;
+          emit(DoctorsLoaded(List.from(_doctors)));
+        }
+      }
+    } catch (e) {
+      // Handle error
+    }
+  }
 
-    emit(DoctorsLoaded(List.from(_doctors)));
+  Future<void> _onDeleteDoctor(DeleteDoctor event, Emitter<DoctorsManagementState> emit) async {
+    try {
+      await ApiService.deleteDoctor(event.doctorId);
+      _doctors = _doctors.where((doctor) => doctor.id != event.doctorId).toList();
+      emit(DoctorsLoaded(List.from(_doctors)));
+    } catch (e) {
+      // Handle error
+    }
   }
 }

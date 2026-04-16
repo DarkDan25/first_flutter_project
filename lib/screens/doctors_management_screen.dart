@@ -11,7 +11,9 @@ class DoctorsManagementScreen extends StatefulWidget {
 }
 
 class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
-  final _nameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _middleNameController = TextEditingController();
   final _specialtyController = TextEditingController();
 
   @override
@@ -24,7 +26,9 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _middleNameController.dispose();
     _specialtyController.dispose();
     super.dispose();
   }
@@ -35,7 +39,7 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
       listener: (context, state) {
         if (state is DoctorsLoaded) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Список врачей обновлен'),
               duration: Duration(seconds: 2),
             ),
@@ -44,9 +48,9 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Управление врачами'),
+          title: const Text('Управление врачами'),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
@@ -58,12 +62,12 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
             if (state is DoctorsLoaded) {
               return _buildDoctorsList(state.doctors);
             }
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _showAddDoctorDialog(context),
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
       ),
     );
@@ -71,7 +75,7 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
 
   Widget _buildDoctorsList(List<Doctor> doctors) {
     if (doctors.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'Нет врачей в системе',
           style: TextStyle(fontSize: 18, color: Colors.grey),
@@ -80,7 +84,7 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
     }
 
     return ListView.builder(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       itemCount: doctors.length,
       itemBuilder: (context, index) {
         return _buildDoctorCard(doctors[index]);
@@ -90,10 +94,10 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
 
   Widget _buildDoctorCard(Doctor doctor) {
     return Card(
-      key: ValueKey(doctor.name),
-      margin: EdgeInsets.only(bottom: 12),
+      key: ValueKey(doctor.id),
+      margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             Expanded(
@@ -101,10 +105,10 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    doctor.name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    doctor.fullName,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     doctor.specialty,
                     style: TextStyle(fontSize: 14, color: Colors.grey[600]),
@@ -113,12 +117,12 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.edit, color: Colors.blue),
+              icon: const Icon(Icons.edit, color: Colors.blue),
               onPressed: () => _showEditDoctorDialog(context, doctor),
             ),
             IconButton(
-              icon: Icon(Icons.delete, color: Colors.red),
-              onPressed: () => _showDeleteConfirmation(context, doctor.name),
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () => _showDeleteConfirmation(context, doctor),
             ),
           ],
         ),
@@ -127,24 +131,34 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
   }
 
   void _showAddDoctorDialog(BuildContext context) {
-    _nameController.clear();
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _middleNameController.clear();
     _specialtyController.clear();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Добавить врача'),
+        title: const Text('Добавить врача'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'ФИО врача'),
+                controller: _lastNameController,
+                decoration: const InputDecoration(labelText: 'Фамилия'),
+              ),
+              TextField(
+                controller: _firstNameController,
+                decoration: const InputDecoration(labelText: 'Имя'),
+              ),
+              TextField(
+                controller: _middleNameController,
+                decoration: const InputDecoration(labelText: 'Отчество (опционально)'),
               ),
               TextField(
                 controller: _specialtyController,
-                decoration: InputDecoration(labelText: 'Специальность'),
+                decoration: const InputDecoration(labelText: 'Специальность'),
               ),
             ],
           ),
@@ -152,21 +166,24 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Отмена'),
+            child: const Text('Отмена'),
           ),
           ElevatedButton(
             onPressed: () {
-              if (_nameController.text.isNotEmpty &&
+              if (_firstNameController.text.isNotEmpty &&
+                  _lastNameController.text.isNotEmpty &&
                   _specialtyController.text.isNotEmpty) {
                 final newDoctor = Doctor(
-                  name: _nameController.text,
+                  firstName: _firstNameController.text,
+                  lastName: _lastNameController.text,
+                  middleName: _middleNameController.text.isEmpty ? null : _middleNameController.text,
                   specialty: _specialtyController.text,
                 );
                 context.read<DoctorsManagementBloc>().add(AddDoctor(newDoctor));
                 Navigator.of(context).pop();
               }
             },
-            child: Text('Добавить'),
+            child: const Text('Добавить'),
           ),
         ],
       ),
@@ -174,24 +191,34 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
   }
 
   void _showEditDoctorDialog(BuildContext context, Doctor doctor) {
-    _nameController.text = doctor.name;
+    _firstNameController.text = doctor.firstName;
+    _lastNameController.text = doctor.lastName;
+    _middleNameController.text = doctor.middleName ?? "";
     _specialtyController.text = doctor.specialty;
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Редактировать врача'),
+        title: const Text('Редактировать врача'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'ФИО врача'),
+                controller: _lastNameController,
+                decoration: const InputDecoration(labelText: 'Фамилия'),
+              ),
+              TextField(
+                controller: _firstNameController,
+                decoration: const InputDecoration(labelText: 'Имя'),
+              ),
+              TextField(
+                controller: _middleNameController,
+                decoration: const InputDecoration(labelText: 'Отчество (опционально)'),
               ),
               TextField(
                 controller: _specialtyController,
-                decoration: InputDecoration(labelText: 'Специальность'),
+                decoration: const InputDecoration(labelText: 'Специальность'),
               ),
             ],
           ),
@@ -199,14 +226,18 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Отмена'),
+            child: const Text('Отмена'),
           ),
           ElevatedButton(
             onPressed: () {
-              if (_nameController.text.isNotEmpty &&
+              if (_firstNameController.text.isNotEmpty &&
+                  _lastNameController.text.isNotEmpty &&
                   _specialtyController.text.isNotEmpty) {
                 final updatedDoctor = Doctor(
-                  name: _nameController.text,
+                  id: doctor.id,
+                  firstName: _firstNameController.text,
+                  lastName: _lastNameController.text,
+                  middleName: _middleNameController.text.isEmpty ? null : _middleNameController.text,
                   specialty: _specialtyController.text,
                 );
                 context.read<DoctorsManagementBloc>().add(
@@ -215,30 +246,32 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                 Navigator.of(context).pop();
               }
             },
-            child: Text('Сохранить'),
+            child: const Text('Сохранить'),
           ),
         ],
       ),
     );
   }
 
-  void _showDeleteConfirmation(BuildContext context, String doctorName) {
+  void _showDeleteConfirmation(BuildContext context, Doctor doctor) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Удалить врача'),
-        content: Text('Вы уверены, что хотите удалить врача $doctorName?'),
+        title: const Text('Удалить врача'),
+        content: Text('Вы уверены, что хотите удалить врача ${doctor.fullName}?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Отмена'),
+            child: const Text('Отмена'),
           ),
           TextButton(
             onPressed: () {
-              context.read<DoctorsManagementBloc>().add(DeleteDoctor(doctorName));
+              if (doctor.id != null) {
+                context.read<DoctorsManagementBloc>().add(DeleteDoctor(doctor.id!));
+              }
               Navigator.of(context).pop();
             },
-            child: Text('Удалить', style: TextStyle(color: Colors.red)),
+            child: const Text('Удалить', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),

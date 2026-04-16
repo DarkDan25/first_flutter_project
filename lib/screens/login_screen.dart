@@ -71,6 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 },
               ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () => context.push('/register'),
+                child: const Text('Нет аккаунта? Зарегистрироваться'),
+              ),
             ],
           ),
         ),

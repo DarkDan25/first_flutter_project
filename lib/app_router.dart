@@ -1,5 +1,6 @@
 import 'package:first_flutter_project/screens/clinic_info_screen.dart';
 import 'package:first_flutter_project/screens/doctors_management_screen.dart';
+import 'package:first_flutter_project/screens/registration_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:first_flutter_project/screens/login_screen.dart';
 import 'package:first_flutter_project/screens/current_appointments_wrapper.dart';
@@ -13,6 +14,10 @@ class AppRouter {
       GoRoute(
         path: '/',
         builder: (context, state) => LoginScreen(),
+      ),
+      GoRoute(
+        path: '/register',
+        builder: (context, state) => const RegistrationScreen(),
       ),
       GoRoute(
         path: '/current',

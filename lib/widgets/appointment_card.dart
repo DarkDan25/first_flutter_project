@@ -14,30 +14,29 @@ class AppointmentCard extends StatelessWidget {
     required this.onComplete,
   });
 
+  @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            // Добавляем изображение врача
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    appointment.doctorName,
-                    style: TextStyle(
+                    appointment.doctor.fullName,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(appointment.specialty),
-                  SizedBox(height: 4),
-                  Text('${appointment.date} ${appointment.time}'),
+                  const SizedBox(height: 4),
+                  Text(appointment.doctor.specialty),
+                  const SizedBox(height: 4),
+                  Text(appointment.date),
                 ],
               ),
             ),
@@ -45,12 +44,12 @@ class AppointmentCard extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () => _cancelAppointment(context),
-                  child: Text('Отменить'),
+                  child: const Text('Отменить'),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 ElevatedButton(
                   onPressed: () => _completeAppointment(context),
-                  child: Text('Завершить'),
+                  child: const Text('Завершить'),
                 ),
               ],
             ),
@@ -64,22 +63,22 @@ class AppointmentCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Отменить запись?'),
-        content: Text('Вы уверены, что хотите отменить запись к ${appointment.doctorName}?'),
+        title: const Text('Отменить запись?'),
+        content: Text('Вы уверены, что хотите отменить запись к ${appointment.doctor.fullName}?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Нет'),
+            child: const Text('Нет'),
           ),
           TextButton(
             onPressed: () {
               onCancel();
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Запись отменена')),
+                const SnackBar(content: Text('Запись отменена')),
               );
             },
-            child: Text('Да'),
+            child: const Text('Да'),
           ),
         ],
       ),
@@ -90,22 +89,22 @@ class AppointmentCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Завершить запись?'),
-        content: Text('Подтвердите, что прием у ${appointment.doctorName} завершен.'),
+        title: const Text('Завершить запись?'),
+        content: Text('Подтвердите, что прием у ${appointment.doctor.fullName} завершен.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Отмена'),
+            child: const Text('Отмена'),
           ),
           TextButton(
             onPressed: () {
               onComplete();
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Запись перемещена в историю')),
+                const SnackBar(content: Text('Запись перемещена в историю')),
               );
             },
-            child: Text('Подтвердить'),
+            child: const Text('Подтвердить'),
           ),
         ],
       ),

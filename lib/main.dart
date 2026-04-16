@@ -1,5 +1,4 @@
 import 'package:first_flutter_project/app_router.dart';
-import 'package:first_flutter_project/screens/doctors_data_updater.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_flutter_project/bloc/current_appointments/current_appointments_bloc.dart';
@@ -43,15 +42,13 @@ class MyApp extends StatelessWidget {
             create: (context) => DoctorsManagementBloc()..add(LoadDoctors()),
           ),
         ],
-        child: DoctorsDataUpdater(
-          child: MaterialApp.router(
-            routerConfig: AppRouter.router,
-            title: 'Запись к врачу',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            debugShowCheckedModeBanner: false,
+        child: MaterialApp.router(
+          routerConfig: AppRouter.router,
+          title: 'Запись к врачу',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
           ),
+          debugShowCheckedModeBanner: false,
         ),
     );
   }
