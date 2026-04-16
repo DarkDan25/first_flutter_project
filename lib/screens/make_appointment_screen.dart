@@ -155,7 +155,6 @@ class _MakeAppointmentScreenState extends State<MakeAppointmentScreen> {
         specialty: doctor.specialty,
         date: _selectedDate,
         time: _selectedTime,
-        imageUrl: doctor.imageUrl,
       ));
 
       _formKey.currentState!.reset();

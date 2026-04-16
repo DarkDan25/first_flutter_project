@@ -12,16 +12,14 @@ class SubmitAppointment extends MakeAppointmentEvent {
   final String specialty;
   final String date;
   final String time;
-  final String imageUrl;
 
   const SubmitAppointment({
     required this.doctorName,
     required this.specialty,
     required this.date,
     required this.time,
-    required this.imageUrl,
   });
 
   @override
-  List<Object> get props => [doctorName, specialty, date, time, imageUrl];
+  List<Object> get props => [doctorName, specialty, date, time];
 }

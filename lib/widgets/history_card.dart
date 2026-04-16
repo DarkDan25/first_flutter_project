@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/appointment.dart';
 
-import 'package:first_flutter_project/widgets/cached_doctor_image.dart';
-
 class HistoryCard extends StatelessWidget {
   final Appointment appointment;
 
@@ -16,14 +14,6 @@ class HistoryCard extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Row(
           children: [
-            // Добавляем изображение врача
-            CachedDoctorImage(
-              imageUrl: appointment.imageUrl,
-              //localAsset: appointment.localAsset,
-              // width: 50,
-              // height: 50,
-            ),
-            SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

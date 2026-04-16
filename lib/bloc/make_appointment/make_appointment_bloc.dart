@@ -17,7 +17,6 @@ class MakeAppointmentBloc extends Bloc<MakeAppointmentEvent, MakeAppointmentStat
       specialty: event.specialty,
       date: event.date,
       time: event.time,
-      imageUrl: event.imageUrl,
     );
 
     emit(AppointmentSubmitted(newAppointment));

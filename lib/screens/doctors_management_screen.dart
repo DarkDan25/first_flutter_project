@@ -13,7 +13,6 @@ class DoctorsManagementScreen extends StatefulWidget {
 class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
   final _nameController = TextEditingController();
   final _specialtyController = TextEditingController();
-  final _imageUrlController = TextEditingController();
 
   @override
   void initState() {
@@ -27,7 +26,6 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
   void dispose() {
     _nameController.dispose();
     _specialtyController.dispose();
-    _imageUrlController.dispose();
     super.dispose();
   }
 
@@ -98,12 +96,6 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
         padding: EdgeInsets.all(16),
         child: Row(
           children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage(doctor.imageUrl),
-              backgroundColor: Colors.grey[300],
-            ),
-            SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +129,6 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
   void _showAddDoctorDialog(BuildContext context) {
     _nameController.clear();
     _specialtyController.clear();
-    _imageUrlController.clear();
 
     showDialog(
       context: context,
@@ -155,10 +146,6 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                 controller: _specialtyController,
                 decoration: InputDecoration(labelText: 'Специальность'),
               ),
-              TextField(
-                controller: _imageUrlController,
-                decoration: InputDecoration(labelText: 'URL фото'),
-              ),
             ],
           ),
         ),
@@ -174,9 +161,6 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                 final newDoctor = Doctor(
                   name: _nameController.text,
                   specialty: _specialtyController.text,
-                  imageUrl: _imageUrlController.text.isNotEmpty
-                      ? _imageUrlController.text
-                      : 'https://via.placeholder.com/150',
                 );
                 context.read<DoctorsManagementBloc>().add(AddDoctor(newDoctor));
                 Navigator.of(context).pop();
@@ -192,7 +176,6 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
   void _showEditDoctorDialog(BuildContext context, Doctor doctor) {
     _nameController.text = doctor.name;
     _specialtyController.text = doctor.specialty;
-    _imageUrlController.text = doctor.imageUrl;
 
     showDialog(
       context: context,
@@ -210,10 +193,6 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                 controller: _specialtyController,
                 decoration: InputDecoration(labelText: 'Специальность'),
               ),
-              TextField(
-                controller: _imageUrlController,
-                decoration: InputDecoration(labelText: 'URL фото'),
-              ),
             ],
           ),
         ),
@@ -229,9 +208,6 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                 final updatedDoctor = Doctor(
                   name: _nameController.text,
                   specialty: _specialtyController.text,
-                  imageUrl: _imageUrlController.text.isNotEmpty
-                      ? _imageUrlController.text
-                      : doctor.imageUrl,
                 );
                 context.read<DoctorsManagementBloc>().add(
                     UpdateDoctor(oldDoctor: doctor, newDoctor: updatedDoctor)

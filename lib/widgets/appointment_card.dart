@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:first_flutter_project/models/appointment.dart';
-import 'package:first_flutter_project/widgets/cached_doctor_image.dart';
 
 
 class AppointmentCard extends StatelessWidget {
@@ -28,13 +27,6 @@ class AppointmentCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CachedDoctorImage(
-                    imageUrl: appointment.imageUrl,
-                    //localAsset: appointment.localAsset,
-                    // width: 50,
-                    // height: 50,
-                  ),
-                  SizedBox(width: 12),
                   Text(
                     appointment.doctorName,
                     style: TextStyle(
