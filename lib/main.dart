@@ -1,6 +1,5 @@
 import 'package:first_flutter_project/app_router.dart';
 import 'package:first_flutter_project/screens/doctors_data_updater.dart';
-import 'package:first_flutter_project/screens/medical_card_updater.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_flutter_project/bloc/current_appointments/current_appointments_bloc.dart';
@@ -9,8 +8,6 @@ import 'package:first_flutter_project/bloc/make_appointment/make_appointment_blo
 import 'package:first_flutter_project/bloc/login/login_bloc.dart';
 import 'package:first_flutter_project/bloc/profile/profile_bloc.dart';
 import 'package:first_flutter_project/bloc/clinic_info/clinic_info_bloc.dart';
-import 'package:first_flutter_project/bloc/medical_card/medical_card_bloc.dart';
-import 'package:first_flutter_project/bloc/prescriptions/prescriptions_bloc.dart';
 import 'package:first_flutter_project/bloc/doctors_management/doctors_management_bloc.dart';
 
 void main() {
@@ -42,26 +39,18 @@ class MyApp extends StatelessWidget {
           BlocProvider<ClinicInfoBloc>(
             create: (context) => ClinicInfoBloc()..add(LoadClinicInfo()),
           ),
-          BlocProvider<MedicalCardBloc>(
-            create: (context) => MedicalCardBloc()..add(LoadMedicalCard()),
-          ),
-          BlocProvider<PrescriptionsBloc>(
-            create: (context) => PrescriptionsBloc()..add(LoadPrescriptions()),
-          ),
           BlocProvider<DoctorsManagementBloc>(
             create: (context) => DoctorsManagementBloc()..add(LoadDoctors()),
           ),
         ],
-        child: MedicalCardUpdater(
-          child: DoctorsDataUpdater(
-            child: MaterialApp.router(
-              routerConfig: AppRouter.router,
-              title: 'Запись к врачу',
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-              ),
-              debugShowCheckedModeBanner: false,
+        child: DoctorsDataUpdater(
+          child: MaterialApp.router(
+            routerConfig: AppRouter.router,
+            title: 'Запись к врачу',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
             ),
+            debugShowCheckedModeBanner: false,
           ),
         ),
     );
