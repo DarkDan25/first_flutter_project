@@ -4,6 +4,7 @@ C:\Android_Projects\first_flutter_project\backend\src\main\java\com\example\clin
 C:\Android_Projects\first_flutter_project\backend\src\main\java\com\example\clinic\repository\DoctorRepository.java
 C:\Android_Projects\first_flutter_project\backend\src\main\java\com\example\clinic\repository\AppointmentRepository.java
 C:\Android_Projects\first_flutter_project\backend\src\main\java\com\example\clinic\ClinicApplication.java
+C:\Android_Projects\first_flutter_project\backend\src\main\java\com\example\clinic\controller\AuthController.java
 C:\Android_Projects\first_flutter_project\backend\src\main\java\com\example\clinic\controller\AppointmentController.java
 C:\Android_Projects\first_flutter_project\backend\src\main\java\com\example\clinic\entity\Doctor.java
 C:\Android_Projects\first_flutter_project\backend\src\main\java\com\example\clinic\entity\Admin.java

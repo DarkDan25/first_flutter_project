@@ -34,7 +34,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     emit(LoginLoading());
     try {
-      await ApiService.register(event.username, event.password);
+      await ApiService.register(
+        event.username,
+        event.password,
+        event.firstName,
+        event.lastName,
+      );
       emit(RegisterSuccess());
     } catch (e) {
       emit(LoginFailure(error: e.toString().replaceAll('Exception: ', '')));

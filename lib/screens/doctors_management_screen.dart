@@ -15,6 +15,8 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
   final _lastNameController = TextEditingController();
   final _middleNameController = TextEditingController();
   final _specialtyController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -30,6 +32,8 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
     _lastNameController.dispose();
     _middleNameController.dispose();
     _specialtyController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -113,6 +117,13 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                     doctor.specialty,
                     style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
+                  if (doctor.username != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      'Логин: ${doctor.username}',
+                      style: const TextStyle(fontSize: 12, color: Colors.blue),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -135,6 +146,8 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
     _lastNameController.clear();
     _middleNameController.clear();
     _specialtyController.clear();
+    _usernameController.clear();
+    _passwordController.clear();
 
     showDialog(
       context: context,
@@ -160,6 +173,17 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                 controller: _specialtyController,
                 decoration: const InputDecoration(labelText: 'Специальность'),
               ),
+              const Divider(height: 32),
+              const Text('Учетные данные', style: TextStyle(fontWeight: FontWeight.bold)),
+              TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(labelText: 'Логин'),
+              ),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Пароль'),
+              ),
             ],
           ),
         ),
@@ -172,15 +196,23 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
             onPressed: () {
               if (_firstNameController.text.isNotEmpty &&
                   _lastNameController.text.isNotEmpty &&
-                  _specialtyController.text.isNotEmpty) {
+                  _specialtyController.text.isNotEmpty &&
+                  _usernameController.text.isNotEmpty &&
+                  _passwordController.text.isNotEmpty) {
                 final newDoctor = Doctor(
                   firstName: _firstNameController.text,
                   lastName: _lastNameController.text,
                   middleName: _middleNameController.text.isEmpty ? null : _middleNameController.text,
                   specialty: _specialtyController.text,
+                  username: _usernameController.text,
+                  password: _passwordController.text,
                 );
                 context.read<DoctorsManagementBloc>().add(AddDoctor(newDoctor));
                 Navigator.of(context).pop();
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Заполните все поля, включая логин и пароль')),
+                );
               }
             },
             child: const Text('Добавить'),
@@ -195,6 +227,8 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
     _lastNameController.text = doctor.lastName;
     _middleNameController.text = doctor.middleName ?? "";
     _specialtyController.text = doctor.specialty;
+    _usernameController.text = doctor.username ?? "";
+    _passwordController.clear(); // Не показываем старый пароль
 
     showDialog(
       context: context,
@@ -220,6 +254,17 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
                 controller: _specialtyController,
                 decoration: const InputDecoration(labelText: 'Специальность'),
               ),
+              const Divider(height: 32),
+              const Text('Учетные данные', style: TextStyle(fontWeight: FontWeight.bold)),
+              TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(labelText: 'Логин'),
+              ),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Новый пароль (оставьте пустым для сохранения старого)'),
+              ),
             ],
           ),
         ),
@@ -232,13 +277,16 @@ class _DoctorsManagementScreenState extends State<DoctorsManagementScreen> {
             onPressed: () {
               if (_firstNameController.text.isNotEmpty &&
                   _lastNameController.text.isNotEmpty &&
-                  _specialtyController.text.isNotEmpty) {
+                  _specialtyController.text.isNotEmpty &&
+                  _usernameController.text.isNotEmpty) {
                 final updatedDoctor = Doctor(
                   id: doctor.id,
                   firstName: _firstNameController.text,
                   lastName: _lastNameController.text,
                   middleName: _middleNameController.text.isEmpty ? null : _middleNameController.text,
                   specialty: _specialtyController.text,
+                  username: _usernameController.text,
+                  password: _passwordController.text.isNotEmpty ? _passwordController.text : null,
                 );
                 context.read<DoctorsManagementBloc>().add(
                     UpdateDoctor(oldDoctor: doctor, newDoctor: updatedDoctor)

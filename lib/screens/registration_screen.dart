@@ -13,6 +13,8 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
@@ -37,9 +39,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               const Icon(Icons.person_add, size: 80, color: Colors.blue),
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
+              TextField(
+                controller: _lastNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Фамилия',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.badge),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _firstNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Имя',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person_outline),
+                ),
+              ),
+              const SizedBox(height: 16),
               TextField(
                 controller: _usernameController,
                 decoration: const InputDecoration(
@@ -82,9 +102,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         );
                         return;
                       }
+                      if (_lastNameController.text.isEmpty || _firstNameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Заполните ФИО')),
+                        );
+                        return;
+                      }
                       context.read<LoginBloc>().add(RegisterSubmitted(
                         username: _usernameController.text,
                         password: _passwordController.text,
+                        firstName: _firstNameController.text,
+                        lastName: _lastNameController.text,
                       ));
                     },
                     style: ElevatedButton.styleFrom(
@@ -97,7 +125,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () => context.pop(),
-                child: const Text('Уже есть аккаунт? Войти'),
+                child: const Text('Уже есть аккаунт'),
               ),
             ],
           ),
@@ -110,6 +138,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
   }

@@ -67,14 +67,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 50),
                     ),
-                    child: Text(state is LoginFailure ? 'Retry' : 'Login'),
+                    child: Text(state is LoginFailure ? 'Повторить вход' : 'Войти'),
                   );
                 },
               ),
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () => context.push('/register'),
-                child: const Text('Нет аккаунта? Зарегистрироваться'),
+                child: const Text('Зарегистрироваться'),
               ),
             ],
           ),

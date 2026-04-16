@@ -20,13 +20,21 @@ public class Admin {
     @Column(name = "отчество", length = 20)
     private String middleName;
 
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
     public Admin() {}
 
-    public Admin(Integer id, String firstName, String lastName, String middleName) {
+    public Admin(Integer id, String firstName, String lastName, String middleName, String username, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
+        this.username = username;
+        this.password = password;
     }
 
     public Integer getId() {
@@ -59,5 +67,21 @@ public class Admin {
 
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

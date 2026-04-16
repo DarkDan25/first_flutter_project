@@ -20,13 +20,19 @@ public class Patient {
     @Column(name = "отчество", length = 20)
     private String middleName;
 
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
     public Patient() {}
 
-    public Patient(Integer id, String firstName, String lastName, String middleName) {
-        this.id = id;
+    public Patient(String username, String password, String firstName, String lastName) {
+        this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.middleName = middleName;
     }
 
     public Integer getId() {
@@ -59,5 +65,21 @@ public class Patient {
 
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

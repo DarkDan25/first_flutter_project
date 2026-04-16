@@ -1,7 +1,7 @@
 package com.example.clinic.controller;
 
-import com.example.clinic.entity.User;
-import com.example.clinic.repository.UserRepository;
+import com.example.clinic.entity.Patient;
+import com.example.clinic.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +14,21 @@ import java.util.Optional;
 public class AuthController {
 
     @Autowired
-    private UserRepository userRepository;
+    private PatientRepository patientRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+    public ResponseEntity<?> register(@RequestBody Patient patient) {
+        if (patientRepository.findByUsername(patient.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("Пользователь уже существует");
         }
-        user.setRole("PATIENT"); // Default role
-        return ResponseEntity.ok(userRepository.save(user));
+        return ResponseEntity.ok(patientRepository.save(patient));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        Optional<User> dbUser = userRepository.findByUsername(user.getUsername());
-        if (dbUser.isPresent() && dbUser.get().getPassword().equals(user.getPassword())) {
-            return ResponseEntity.ok(dbUser.get());
+    public ResponseEntity<?> login(@RequestBody Patient patient) {
+        Optional<Patient> dbPatient = patientRepository.findByUsername(patient.getUsername());
+        if (dbPatient.isPresent() && dbPatient.get().getPassword().equals(patient.getPassword())) {
+            return ResponseEntity.ok(dbPatient.get());
         }
         return ResponseEntity.status(401).body("Неверный логин или пароль");
     }

@@ -1,7 +1,6 @@
 package com.example.clinic.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(name = "doctors")
@@ -24,14 +23,22 @@ public class Doctor {
     @Column(name = "специальность", nullable = false, length = 20)
     private String specialty;
 
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
     public Doctor() {}
 
-    public Doctor(Integer id, String firstName, String lastName, String middleName, String specialty) {
+    public Doctor(Integer id, String firstName, String lastName, String middleName, String specialty, String username, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.specialty = specialty;
+        this.username = username;
+        this.password = password;
     }
 
     public Integer getId() {
@@ -72,5 +79,21 @@ public class Doctor {
 
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

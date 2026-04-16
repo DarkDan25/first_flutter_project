@@ -4,6 +4,8 @@ class Doctor {
   final String lastName;
   final String? middleName;
   final String specialty;
+  final String? username;
+  final String? password;
 
   Doctor({
     this.id,
@@ -11,6 +13,8 @@ class Doctor {
     required this.lastName,
     this.middleName,
     required this.specialty,
+    this.username,
+    this.password,
   });
 
   String get fullName => '$lastName $firstName ${middleName ?? ""}'.trim();
@@ -22,6 +26,8 @@ class Doctor {
       lastName: json['lastName'],
       middleName: json['middleName'],
       specialty: json['specialty'],
+      username: json['username'],
+      // Password usually not returned from API
     );
   }
 
@@ -32,6 +38,8 @@ class Doctor {
       'lastName': lastName,
       'middleName': middleName,
       'specialty': specialty,
+      if (username != null) 'username': username,
+      if (password != null) 'password': password,
     };
   }
 }
