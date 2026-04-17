@@ -76,7 +76,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (role == 'PATIENT') ...[
+                    if (role == 'PATIENT' || role == 'DOCTOR') ...[
                       SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {

@@ -30,6 +30,14 @@ public class AppointmentController {
         return appointmentRepository.save(appointment);
     }
 
+    @PutMapping("/{id}")
+    public Appointment updateAppointmentStatus(@PathVariable Integer id, @RequestBody java.util.Map<String, String> payload) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+        appointment.setStatus(payload.get("status"));
+        return appointmentRepository.save(appointment);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteAppointment(@PathVariable Integer id) {
         appointmentRepository.deleteById(id);

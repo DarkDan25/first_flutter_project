@@ -7,7 +7,15 @@ abstract class CurrentAppointmentsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadCurrentAppointments extends CurrentAppointmentsEvent {}
+class LoadCurrentAppointments extends CurrentAppointmentsEvent {
+  final String role;
+  final int userId;
+
+  const LoadCurrentAppointments({required this.role, required this.userId});
+
+  @override
+  List<Object> get props => [role, userId];
+}
 
 class CancelAppointment extends CurrentAppointmentsEvent {
   final int appointmentId;

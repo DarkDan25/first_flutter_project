@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider<CurrentAppointmentsBloc>(
-            create: (context) => CurrentAppointmentsBloc()..add(LoadCurrentAppointments()),
+            create: (context) => CurrentAppointmentsBloc(),
           ),
           BlocProvider<HistoryBloc>(
-            create: (context) => HistoryBloc()..add(LoadHistory()),
+            create: (context) => HistoryBloc(),
           ),
           BlocProvider<MakeAppointmentBloc>(
             create: (context) => MakeAppointmentBloc(),

@@ -51,12 +51,14 @@ class CurrentAppointmentsWrapper extends StatelessWidget {
                     appointments: state.appointments,
                     role: role,
                     onCancelAppointment: (appointmentId) {
+                      final appointment = state.appointments.firstWhere((appt) => appt.id == appointmentId);
                       context.read<CurrentAppointmentsBloc>().add(CancelAppointment(appointmentId));
+                      context.read<HistoryBloc>().add(AddToHistory(appointment.copyWith(status: 'Отменено')));
                     },
                     onCompleteAppointment: (appointmentId) {
                       final appointment = state.appointments.firstWhere((appt) => appt.id == appointmentId);
                       context.read<CurrentAppointmentsBloc>().add(CompleteAppointment(appointmentId));
-                      context.read<HistoryBloc>().add(AddToHistory(appointment));
+                      context.read<HistoryBloc>().add(AddToHistory(appointment.copyWith(status: 'Завершено')));
                     },
                   );
                 } else {

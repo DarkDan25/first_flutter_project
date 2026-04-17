@@ -17,7 +17,17 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   Future<void> _onLoadHistory(LoadHistory event, Emitter<HistoryState> emit) async {
     try {
       final allAppointments = await ApiService.getAppointments();
-      _historyAppointments = allAppointments.where((a) => a.status == 'Завершено' || a.status == 'Отменено').toList();
+      _historyAppointments = allAppointments.where((a) {
+        final isCorrectStatus = (a.status == 'Завершено' || a.status == 'Отменено');
+        if (!isCorrectStatus) return false;
+        
+        if (event.role == 'PATIENT') {
+          return a.patient?.id == event.userId;
+        } else if (event.role == 'DOCTOR') {
+          return a.doctor.id == event.userId;
+        }
+        return false;
+      }).toList();
       emit(HistoryLoaded(_historyAppointments));
     } catch (e) {
       emit(const HistoryLoaded([]));

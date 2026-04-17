@@ -29,6 +29,24 @@ class Appointment {
     }
   }
 
+  Appointment copyWith({
+    int? id,
+    Patient? patient,
+    Doctor? doctor,
+    String? date,
+    String? time,
+    String? status,
+  }) {
+    return Appointment(
+      id: id ?? this.id,
+      patient: patient ?? this.patient,
+      doctor: doctor ?? this.doctor,
+      date: date ?? this.date,
+      time: time ?? this.time,
+      status: status ?? this.status,
+    );
+  }
+
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
       id: json['id'],

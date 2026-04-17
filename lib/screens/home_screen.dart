@@ -34,10 +34,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void _reloadData() {
     final loginState = context.read<LoginBloc>().state;
     if (loginState is LoginSuccess) {
-      if (loginState.role == 'PATIENT' || loginState.role == 'DOCTOR') {
-        context.read<CurrentAppointmentsBloc>().add(LoadCurrentAppointments());
-        context.read<HistoryBloc>().add(LoadHistory());
-      } else if (loginState.role == 'ADMIN') {
+      final role = loginState.role;
+      final userData = loginState.userData;
+      final userId = userData['id'] as int;
+      
+      if (role == 'PATIENT' || role == 'DOCTOR') {
+        context.read<CurrentAppointmentsBloc>().add(LoadCurrentAppointments(role: role, userId: userId));
+        context.read<HistoryBloc>().add(LoadHistory(role: role, userId: userId));
+      } else if (role == 'ADMIN') {
         context.read<DoctorsManagementBloc>().add(LoadDoctors());
         context.read<PatientsManagementBloc>().add(LoadPatients());
       }
@@ -46,31 +50,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        if (state is LoginSuccess) {
-          final role = state.role;
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(role == 'ADMIN' ? 'Управление клиникой' : 'Текущие записи'),
-              actions: [
-                if (role == 'PATIENT')
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<MakeAppointmentBloc, MakeAppointmentState>(
+          listener: (context, state) {
+            if (state is AppointmentSubmitted) {
+              context.read<CurrentAppointmentsBloc>().add(AddAppointment(state.appointment));
+            }
+          },
+        ),
+      ],
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) {
+          if (state is LoginSuccess) {
+            final role = state.role;
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(role == 'ADMIN' ? 'Управление клиникой' : 'Текущие записи'),
+                actions: [
+                  if (role == 'PATIENT')
+                    IconButton(
+                      icon: Icon(Icons.info),
+                      onPressed: () => context.push('/clinic_info'),
+                    ),
                   IconButton(
-                    icon: Icon(Icons.info),
-                    onPressed: () => context.push('/clinic_info'),
+                    icon: Icon(Icons.person),
+                    onPressed: () => context.push('/profile'),
                   ),
-                IconButton(
-                  icon: Icon(Icons.person),
-                  onPressed: () => context.push('/profile'),
-                ),
-              ],
-            ),
-            body: _buildBody(role),
-            floatingActionButton: _buildFab(role),
-          );
-        }
-        return const Scaffold(body: Center(child: CircularProgressIndicator()));
-      },
+                ],
+              ),
+              body: _buildBody(role),
+              floatingActionButton: _buildFab(role),
+            );
+          }
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        },
+      ),
     );
   }
 
@@ -119,11 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
             return CurrentAppointmentsScreen(
               appointments: state.appointments,
               role: role,
-              onCancelAppointment: (id) => context.read<CurrentAppointmentsBloc>().add(CancelAppointment(id)),
+              onCancelAppointment: (id) {
+                final appt = state.appointments.firstWhere((a) => a.id == id);
+                context.read<CurrentAppointmentsBloc>().add(CancelAppointment(id));
+                context.read<HistoryBloc>().add(AddToHistory(appt.copyWith(status: 'Отменено')));
+              },
               onCompleteAppointment: (id) {
                 final appt = state.appointments.firstWhere((a) => a.id == id);
                 context.read<CurrentAppointmentsBloc>().add(CompleteAppointment(id));
-                context.read<HistoryBloc>().add(AddToHistory(appt));
+                context.read<HistoryBloc>().add(AddToHistory(appt.copyWith(status: 'Завершено')));
               },
             );
           }

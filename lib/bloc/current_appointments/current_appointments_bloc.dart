@@ -20,7 +20,17 @@ class CurrentAppointmentsBloc extends Bloc<CurrentAppointmentsEvent, CurrentAppo
     try {
       _currentAppointments = await ApiService.getAppointments();
       // Filter for current appointments (status: Ожидается)
-      _currentAppointments = _currentAppointments.where((a) => a.status == 'Ожидается').toList();
+      _currentAppointments = _currentAppointments.where((a) {
+        final isCorrectStatus = (a.status == 'Ожидается');
+        if (!isCorrectStatus) return false;
+        
+        if (event.role == 'PATIENT') {
+          return a.patient?.id == event.userId;
+        } else if (event.role == 'DOCTOR') {
+          return a.doctor.id == event.userId;
+        }
+        return false;
+      }).toList();
       emit(CurrentAppointmentsLoaded(_currentAppointments));
     } catch (e) {
       emit(const CurrentAppointmentsLoaded([]));
