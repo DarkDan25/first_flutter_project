@@ -28,12 +28,12 @@ class HistoryCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(appointment.doctor.specialty),
                   const SizedBox(height: 4),
-                  Text(appointment.date),
+                  Text('${appointment.formattedDate} в ${appointment.time}'),
                   const SizedBox(height: 4),
-                  const Text(
-                    'Завершено',
+                  Text(
+                    appointment.status,
                     style: TextStyle(
-                      color: Colors.green,
+                      color: appointment.status == 'Завершено' ? Colors.green : Colors.red,
                       fontStyle: FontStyle.italic,
                     ),
                   ),

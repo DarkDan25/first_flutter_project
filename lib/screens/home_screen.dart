@@ -118,6 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is CurrentAppointmentsLoaded) {
             return CurrentAppointmentsScreen(
               appointments: state.appointments,
+              role: role,
               onCancelAppointment: (id) => context.read<CurrentAppointmentsBloc>().add(CancelAppointment(id)),
               onCompleteAppointment: (id) {
                 final appt = state.appointments.firstWhere((a) => a.id == id);

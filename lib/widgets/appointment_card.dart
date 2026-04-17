@@ -4,12 +4,14 @@ import 'package:first_flutter_project/models/appointment.dart';
 
 class AppointmentCard extends StatelessWidget {
   final Appointment appointment;
+  final String role;
   final VoidCallback onCancel;
   final VoidCallback onComplete;
 
   const AppointmentCard({
     super.key,
     required this.appointment,
+    required this.role,
     required this.onCancel,
     required this.onComplete,
   });
@@ -36,21 +38,22 @@ class AppointmentCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(appointment.doctor.specialty),
                   const SizedBox(height: 4),
-                  Text(appointment.date),
+                  Text('${appointment.formattedDate} в ${appointment.time}'),
                 ],
               ),
             ),
             Column(
               children: [
-                TextButton(
-                  onPressed: () => _cancelAppointment(context),
-                  child: const Text('Отменить'),
-                ),
-                const SizedBox(height: 4),
-                ElevatedButton(
-                  onPressed: () => _completeAppointment(context),
-                  child: const Text('Завершить'),
-                ),
+                if (role == 'PATIENT')
+                  TextButton(
+                    onPressed: () => _cancelAppointment(context),
+                    child: const Text('Отменить'),
+                  ),
+                if (role == 'DOCTOR')
+                  ElevatedButton(
+                    onPressed: () => _completeAppointment(context),
+                    child: const Text('Завершить'),
+                  ),
               ],
             ),
           ],

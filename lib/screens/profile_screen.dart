@@ -85,7 +85,7 @@ class ProfileScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(double.infinity, 50),
                         ),
-                        child: Text('Просмотреть завершенные записи ($historyCount)'),
+                        child: Text('Просмотреть историю записей ($historyCount)'),
                       ),
                     ],
                     SizedBox(height: 16),

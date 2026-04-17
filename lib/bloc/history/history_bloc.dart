@@ -17,7 +17,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   Future<void> _onLoadHistory(LoadHistory event, Emitter<HistoryState> emit) async {
     try {
       final allAppointments = await ApiService.getAppointments();
-      _historyAppointments = allAppointments.where((a) => a.status == 'Завершено').toList();
+      _historyAppointments = allAppointments.where((a) => a.status == 'Завершено' || a.status == 'Отменено').toList();
       emit(HistoryLoaded(_historyAppointments));
     } catch (e) {
       emit(const HistoryLoaded([]));

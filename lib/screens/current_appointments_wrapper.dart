@@ -6,6 +6,8 @@ import 'package:first_flutter_project/bloc/current_appointments/current_appointm
 import 'package:first_flutter_project/bloc/history/history_bloc.dart';
 import 'package:first_flutter_project/bloc/make_appointment/make_appointment_bloc.dart';
 
+import 'package:first_flutter_project/bloc/login/login_bloc.dart';
+
 class CurrentAppointmentsWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,23 +41,29 @@ class CurrentAppointmentsWrapper extends StatelessWidget {
             ),
           ],
         ),
-        body: BlocBuilder<CurrentAppointmentsBloc, CurrentAppointmentsState>(
-          builder: (context, state) {
-            if (state is CurrentAppointmentsLoaded) {
-              return CurrentAppointmentsScreen(
-                appointments: state.appointments,
-                onCancelAppointment: (appointmentId) {
-                  context.read<CurrentAppointmentsBloc>().add(CancelAppointment(appointmentId));
-                },
-                onCompleteAppointment: (appointmentId) {
-                  final appointment = state.appointments.firstWhere((appt) => appt.id == appointmentId);
-                  context.read<CurrentAppointmentsBloc>().add(CompleteAppointment(appointmentId));
-                  context.read<HistoryBloc>().add(AddToHistory(appointment));
-                },
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
+        body: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, loginState) {
+            final role = loginState is LoginSuccess ? loginState.role : 'UNKNOWN';
+            return BlocBuilder<CurrentAppointmentsBloc, CurrentAppointmentsState>(
+              builder: (context, state) {
+                if (state is CurrentAppointmentsLoaded) {
+                  return CurrentAppointmentsScreen(
+                    appointments: state.appointments,
+                    role: role,
+                    onCancelAppointment: (appointmentId) {
+                      context.read<CurrentAppointmentsBloc>().add(CancelAppointment(appointmentId));
+                    },
+                    onCompleteAppointment: (appointmentId) {
+                      final appointment = state.appointments.firstWhere((appt) => appt.id == appointmentId);
+                      context.read<CurrentAppointmentsBloc>().add(CompleteAppointment(appointmentId));
+                      context.read<HistoryBloc>().add(AddToHistory(appointment));
+                    },
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            );
           },
         ),
         floatingActionButton: FloatingActionButton(

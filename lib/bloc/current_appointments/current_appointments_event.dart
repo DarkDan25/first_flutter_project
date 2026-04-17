@@ -10,7 +10,7 @@ abstract class CurrentAppointmentsEvent extends Equatable {
 class LoadCurrentAppointments extends CurrentAppointmentsEvent {}
 
 class CancelAppointment extends CurrentAppointmentsEvent {
-  final String appointmentId;
+  final int appointmentId;
 
   const CancelAppointment(this.appointmentId);
 
@@ -19,7 +19,7 @@ class CancelAppointment extends CurrentAppointmentsEvent {
 }
 
 class CompleteAppointment extends CurrentAppointmentsEvent {
-  final String appointmentId;
+  final int appointmentId;
 
   const CompleteAppointment(this.appointmentId);
 

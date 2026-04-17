@@ -23,16 +23,20 @@ public class Appointment {
     @Column(name = "date")
     private LocalDate date;
 
+    @Column(name = "appointment_time")
+    private String time;
+
     @Column(name = "status", nullable = false, length = 20)
     private String status;
 
     public Appointment() {}
 
-    public Appointment(Integer id, Patient patient, Doctor doctor, LocalDate date, String status) {
+    public Appointment(Integer id, Patient patient, Doctor doctor, LocalDate date, String time, String status) {
         this.id = id;
         this.patient = patient;
         this.doctor = doctor;
         this.date = date;
+        this.time = time;
         this.status = status;
     }
 
@@ -66,6 +70,14 @@ public class Appointment {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getStatus() {

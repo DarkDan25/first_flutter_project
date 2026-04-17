@@ -5,7 +5,7 @@ import '../models/patient.dart';
 import '../models/appointment.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:8080/api';
+  static const String baseUrl = 'http://192.168.1.78:8080/api';
 
   // Doctors
   static Future<List<Doctor>> getDoctors() async {
@@ -103,6 +103,19 @@ class ApiService {
       return Appointment.fromJson(json.decode(utf8.decode(response.bodyBytes)));
     } else {
       throw Exception('Failed to add appointment');
+    }
+  }
+
+  static Future<Appointment> updateAppointment(int id, String status) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/appointments/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'status': status}),
+    );
+    if (response.statusCode == 200) {
+      return Appointment.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+    } else {
+      throw Exception('Failed to update appointment status');
     }
   }
 

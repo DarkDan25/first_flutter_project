@@ -5,14 +5,16 @@ import 'package:first_flutter_project/widgets/appointment_card.dart';
 
 class CurrentAppointmentsScreen extends StatelessWidget {
   final List<Appointment> appointments;
-  final Function(String) onCancelAppointment;
-  final Function(String) onCompleteAppointment;
+  final Function(int) onCancelAppointment;
+  final Function(int) onCompleteAppointment;
+  final String role;
 
   const CurrentAppointmentsScreen({
     super.key,
     required this.appointments,
     required this.onCancelAppointment,
     required this.onCompleteAppointment,
+    required this.role,
   });
 
   @override
@@ -28,8 +30,9 @@ class CurrentAppointmentsScreen extends StatelessWidget {
         itemCount:appointments.length,
         itemBuilder: (context, index) => AppointmentCard(
           appointment: appointments[index],
-          onCancel: () => onCancelAppointment(appointments[index].id as String),
-          onComplete: () => onCompleteAppointment(appointments[index].id as String),
+          role: role,
+          onCancel: () => onCancelAppointment(appointments[index].id!),
+          onComplete: () => onCompleteAppointment(appointments[index].id!),
         ),
     );
   }

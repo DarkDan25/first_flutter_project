@@ -28,14 +28,23 @@ class CurrentAppointmentsBloc extends Bloc<CurrentAppointmentsEvent, CurrentAppo
   }
 
   Future<void> _onCancelAppointment(CancelAppointment event, Emitter<CurrentAppointmentsState> emit) async {
-    // Implement cancel on backend if needed
-    _currentAppointments = _currentAppointments.where((appointment) => appointment.id != event.appointmentId).toList();
-    emit(CurrentAppointmentsLoaded(_currentAppointments));
+    try {
+      await ApiService.updateAppointment(event.appointmentId, 'Отменено');
+      _currentAppointments = _currentAppointments.where((appointment) => appointment.id != event.appointmentId).toList();
+      emit(CurrentAppointmentsLoaded(_currentAppointments));
+    } catch (e) {
+      // Keep existing state or emit error
+    }
   }
 
   Future<void> _onCompleteAppointment(CompleteAppointment event, Emitter<CurrentAppointmentsState> emit) async {
-    _currentAppointments = _currentAppointments.where((appt) => appt.id != event.appointmentId).toList();
-    emit(CurrentAppointmentsLoaded(_currentAppointments));
+    try {
+      await ApiService.updateAppointment(event.appointmentId, 'Завершено');
+      _currentAppointments = _currentAppointments.where((appt) => appt.id != event.appointmentId).toList();
+      emit(CurrentAppointmentsLoaded(_currentAppointments));
+    } catch (e) {
+      // Keep existing state or emit error
+    }
   }
 
   void _onAddAppointment(AddAppointment event, Emitter<CurrentAppointmentsState> emit) {
