@@ -19,13 +19,12 @@ class AddDoctor extends DoctorsManagementEvent {
 }
 
 class UpdateDoctor extends DoctorsManagementEvent {
-  final Doctor oldDoctor;
-  final Doctor newDoctor;
+  final Doctor doctor;
 
-  const UpdateDoctor({required this.oldDoctor, required this.newDoctor});
+  const UpdateDoctor(this.doctor);
 
   @override
-  List<Object> get props => [oldDoctor, newDoctor];
+  List<Object> get props => [doctor];
 }
 
 class DeleteDoctor extends DoctorsManagementEvent {

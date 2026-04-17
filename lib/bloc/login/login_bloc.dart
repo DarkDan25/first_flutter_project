@@ -9,6 +9,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
     on<LoginSubmitted>(_onLoginSubmitted);
     on<RegisterSubmitted>(_onRegisterSubmitted);
+    on<LoginLogoutRequested>(_onLogoutRequested);
+  }
+
+  void _onLogoutRequested(LoginLogoutRequested event, Emitter<LoginState> emit) {
+    emit(LoginInitial());
   }
 
   Future<void> _onLoginSubmitted(LoginSubmitted event, Emitter<LoginState> emit) async {
@@ -19,8 +24,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     emit(LoginLoading());
     try {
-      await ApiService.login(event.username, event.password);
-      emit(LoginSuccess());
+      final response = await ApiService.login(event.username, event.password);
+      final role = response['role'] as String;
+      final user = response['user'] as Map<String, dynamic>;
+      emit(LoginSuccess(role: role, userData: user));
     } catch (e) {
       emit(LoginFailure(error: e.toString().replaceAll('Exception: ', '')));
     }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -27,6 +28,22 @@ public class DoctorController {
 
     @PutMapping("/{id}")
     public Doctor updateDoctor(@PathVariable Integer id, @RequestBody Doctor doctor) {
+        Optional<Doctor> existingDoctor = doctorRepository.findById(id);
+        if (existingDoctor.isPresent()) {
+            Doctor updatedDoctor = existingDoctor.get();
+            updatedDoctor.setFirstName(doctor.getFirstName());
+            updatedDoctor.setLastName(doctor.getLastName());
+            updatedDoctor.setMiddleName(doctor.getMiddleName());
+            updatedDoctor.setSpecialty(doctor.getSpecialty());
+            updatedDoctor.setUsername(doctor.getUsername());
+            
+            // Only update password if a new one is provided
+            if (doctor.getPassword() != null && !doctor.getPassword().isEmpty()) {
+                updatedDoctor.setPassword(doctor.getPassword());
+            }
+            
+            return doctorRepository.save(updatedDoctor);
+        }
         doctor.setId(id);
         return doctorRepository.save(doctor);
     }

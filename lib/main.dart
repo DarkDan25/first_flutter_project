@@ -8,6 +8,7 @@ import 'package:first_flutter_project/bloc/login/login_bloc.dart';
 import 'package:first_flutter_project/bloc/profile/profile_bloc.dart';
 import 'package:first_flutter_project/bloc/clinic_info/clinic_info_bloc.dart';
 import 'package:first_flutter_project/bloc/doctors_management/doctors_management_bloc.dart';
+import 'package:first_flutter_project/bloc/patients_management/patients_management_bloc.dart';
 
 void main() {
   runApp(MyApp());
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<DoctorsManagementBloc>(
             create: (context) => DoctorsManagementBloc()..add(LoadDoctors()),
+          ),
+          BlocProvider<PatientsManagementBloc>(
+            create: (context) => PatientsManagementBloc()..add(LoadPatients()),
           ),
         ],
         child: MaterialApp.router(

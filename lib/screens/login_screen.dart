@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:first_flutter_project/bloc/login/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -14,10 +16,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Clear controllers when built if the state is initial
+    final state = context.watch<LoginBloc>().state;
+    if (state is LoginInitial) {
+      _usernameController.clear();
+      _passwordController.clear();
+    }
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
-          context.go('/current');
+          context.go('/home');
         } else if (state is LoginFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),

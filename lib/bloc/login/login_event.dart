@@ -36,3 +36,5 @@ class RegisterSubmitted extends LoginEvent {
   @override
   List<Object> get props => [username, password, firstName, lastName];
 }
+
+class LoginLogoutRequested extends LoginEvent {}

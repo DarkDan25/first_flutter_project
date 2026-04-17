@@ -6,6 +6,8 @@ import 'package:first_flutter_project/bloc/history/history_bloc.dart';
 
 
 class AppointmentHistoryWrapper extends StatelessWidget {
+  const AppointmentHistoryWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

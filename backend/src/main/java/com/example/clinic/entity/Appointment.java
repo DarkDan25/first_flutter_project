@@ -9,21 +9,21 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_записи")
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_пациента", nullable = false)
+    @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
     @ManyToOne
-    @JoinColumn(name = "id_врача", nullable = false)
+    @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
-    @Column(name = "дата")
+    @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "статус", nullable = false, length = 20)
+    @Column(name = "status", nullable = false, length = 20)
     private String status;
 
     public Appointment() {}

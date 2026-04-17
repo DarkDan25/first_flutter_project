@@ -38,9 +38,9 @@ class DoctorsManagementBloc extends Bloc<DoctorsManagementEvent, DoctorsManageme
 
   Future<void> _onUpdateDoctor(UpdateDoctor event, Emitter<DoctorsManagementState> emit) async {
     try {
-      if (event.oldDoctor.id != null) {
-        final updatedDoctor = await ApiService.addDoctor(event.newDoctor); // In my ApiService addDoctor acts as save
-        final index = _doctors.indexWhere((d) => d.id == event.oldDoctor.id);
+      if (event.doctor.id != null) {
+        final updatedDoctor = await ApiService.updateDoctor(event.doctor.id!, event.doctor);
+        final index = _doctors.indexWhere((d) => d.id == event.doctor.id);
         if (index != -1) {
           _doctors[index] = updatedDoctor;
           emit(DoctorsLoaded(List.from(_doctors)));

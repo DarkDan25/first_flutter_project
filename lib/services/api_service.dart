@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/doctor.dart';
+import '../models/patient.dart';
 import '../models/appointment.dart';
 
 class ApiService {
@@ -30,10 +31,54 @@ class ApiService {
     }
   }
 
+  static Future<Doctor> updateDoctor(int id, Doctor doctor) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/doctors/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(doctor.toJson()),
+    );
+    if (response.statusCode == 200) {
+      return Doctor.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+    } else {
+      throw Exception('Failed to update doctor');
+    }
+  }
+
   static Future<void> deleteDoctor(int id) async {
     final response = await http.delete(Uri.parse('$baseUrl/doctors/$id'));
     if (response.statusCode != 200) {
       throw Exception('Failed to delete doctor');
+    }
+  }
+
+  // Patients
+  static Future<List<Patient>> getPatients() async {
+    final response = await http.get(Uri.parse('$baseUrl/patients'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      return jsonResponse.map((data) => Patient.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load patients');
+    }
+  }
+
+  static Future<Patient> updatePatient(int id, Patient patient) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/patients/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(patient.toJson()),
+    );
+    if (response.statusCode == 200) {
+      return Patient.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+    } else {
+      throw Exception('Failed to update patient');
+    }
+  }
+
+  static Future<void> deletePatient(int id) async {
+    final response = await http.delete(Uri.parse('$baseUrl/patients/$id'));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete patient');
     }
   }
 

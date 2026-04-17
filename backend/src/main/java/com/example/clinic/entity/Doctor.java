@@ -8,25 +8,25 @@ public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_врача")
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "имя", nullable = false, length = 20)
+    @Column(name = "first_name", nullable = false, length = 20)
     private String firstName;
 
-    @Column(name = "фамилия", nullable = false, length = 20)
+    @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
 
-    @Column(name = "отчество", length = 20)
+    @Column(name = "middle_name", length = 20)
     private String middleName;
 
-    @Column(name = "специальность", nullable = false, length = 20)
+    @Column(name = "specialty", nullable = false, length = 20)
     private String specialty;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     public Doctor() {}
